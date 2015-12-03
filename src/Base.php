@@ -90,6 +90,7 @@ class Base
             ->something()->asGroup('institution')->reluctantly()
             ->maybe(' ')
             ->optional(Common::duOuEndDateDu())
+            ->maybe(';')
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -114,7 +115,7 @@ class Base
         return $regExp->findIn($string);
     }
     
-    protected function arretCaEtJugementTribunalFin($string)
+    protected function arretCaEtJugementTribunalFin()
     {
         $this->builder = new RegExpBuilder;
 
@@ -144,6 +145,7 @@ class Base
         return $regExp->findIn($string);
     }
 
+    // later: array liste tribunaux
     public function jugementTribunal($string)
     {
         $this->builder = new RegExpBuilder();
@@ -181,15 +183,11 @@ class Base
         $this->builder = new RegExpBuilder();
 
         $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
-            ->then('arrêt de la cour de justice de l\'union européenne ')
-            ->append(Common::duOuEndDateDu())
-            ->then(', n° ')
-            ->append($this->builder->getNew()
-                ->anythingBut('PPU')
-                ->anyOf(['PPU']) // TODO:revoir
-            )
-            ->asGroup('numero')
-            // ->then(' ;')
+            ->then('arrêt de la cour de justice de l\'union européenne')
+            ->maybe(' ')
+            ->optional(Common::duOuEndDateDu())
+            ->maybe(', ')
+            ->append(Common::numero($this->builder->getNew()->anythingBut('PPU')))
             ->getRegExp();
     
         return $regExp->findIn($string);

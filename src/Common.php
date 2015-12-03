@@ -24,7 +24,7 @@ class Common
         return (new RegExpBuilder)->getNew()
             ->anyOf(['en date du', 'du'])
             ->then(' ')
-            ->append($this->dateLettres())
+            ->append(static::dateLettres())
             ->asGroup($name);
     }
 
