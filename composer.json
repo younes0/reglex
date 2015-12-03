@@ -1,0 +1,22 @@
+{
+    "name": "younes0/reglex",
+    "description": "Law Fr tools",
+    "keywords": [
+        "php",
+        "reglex"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "^5.1",
+        "gherkins/regexpbuilderphp": "^0.7.4"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Younes0\\Reglex\\": "src"
+        }
+    }
+}
