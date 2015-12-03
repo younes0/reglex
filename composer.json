@@ -6,10 +6,16 @@
         "reglex"
     ],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/younes0/regexpbuilderphp.git"
+        }
+    ],
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "^5.1",
-        "gherkins/regexpbuilderphp": "^0.7.4",
+        "gherkins/regexpbuilderphp": "dev-master",
         "raulfraile/ladybug": "^1.0"
     },
     "require-dev": {

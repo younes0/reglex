@@ -15,21 +15,19 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
 
     public function testLoi()
     {
-        $string = 'L. 2111-4';
+        $v = $this->b->loi('
+            L. 2111-4; 
+            LO. 1-1 du code général de la propriété des personnes publiques; 
+            loi organique n° 2-2;
+        ');
 
-        $values = $this->b->loi($string);
-ldd($values);
-        $this->assertEquals($values['numero'][0], '2111-4');
-        
-        // ldd($values);
-        // $string = 'loi n° 2111-4';
-        // $string = 'loi organique du n° 2111-4';
-        // $string = 'LO. 2111-4';
-        // $string = 'LO. 2111-4 du code général de la propriété des personnes publiques';
-
-        // foreach ($strings as $string) {
-
-        // }
+        $this->assertEquals($v['numero'][0], '2111-4');
+        $this->assertEquals($v['numero'][1], '1-1');
+        $this->assertEquals($v['numero'][2], '2-2');
+        $this->assertEquals($v['organique'][0], false);
+        $this->assertEquals($v['organique'][1], true);
+        $this->assertEquals($v['organique'][2], true);
+        $this->assertEquals($v['code'][1], 'code général de la propriété des personnes publiques');
     }
         
     public function testDecret() 

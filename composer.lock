@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "459b763b4031b3db964f2be595db5745",
-    "content-hash": "3f6c2fa2e654406e16cd4465e19588d5",
+    "hash": "42c7826fb346abbeb39c7c8e5fe73547",
+    "content-hash": "1c6f583f459d36a02efd587c634be3c0",
     "packages": [
         {
             "name": "danielstjules/stringy",
@@ -132,16 +132,16 @@
         },
         {
             "name": "gherkins/regexpbuilderphp",
-            "version": "0.7.4",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/gherkins/regexpbuilderphp.git",
-                "reference": "4d1cd922793eab24d16cc0c5e2ba9ef723f02e2a"
+                "url": "https://github.com/younes0/regexpbuilderphp.git",
+                "reference": "bfe061e19c5ade27c86e02592edd5dc2253046b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gherkins/regexpbuilderphp/zipball/4d1cd922793eab24d16cc0c5e2ba9ef723f02e2a",
-                "reference": "4d1cd922793eab24d16cc0c5e2ba9ef723f02e2a",
+                "url": "https://api.github.com/repos/younes0/regexpbuilderphp/zipball/bfe061e19c5ade27c86e02592edd5dc2253046b1",
+                "reference": "bfe061e19c5ade27c86e02592edd5dc2253046b1",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,6 @@
                     "Gherkins\\RegExpBuilderPHP\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -167,7 +166,10 @@
                 "php",
                 "regex"
             ],
-            "time": "2015-12-02 10:05:06"
+            "support": {
+                "source": "https://github.com/younes0/regexpbuilderphp/tree/master"
+            },
+            "time": "2015-12-03 17:39:59"
         },
         {
             "name": "illuminate/contracts",
@@ -1259,6 +1261,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "gherkins/regexpbuilderphp": 20,
         "satooshi/php-coveralls": 20
     },
     "prefer-stable": false,

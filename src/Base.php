@@ -37,10 +37,14 @@ class Base
                 ->asGroup('code')
             )
             ->getRegExp();
- 
-        return $regExp->findIn($string);
-        $output = $regExp->findIn($string);
-        $output['organique'] = Str::contains($string, ['loi organique', 'LO.']);
+        
+        $array = $regExp->findIn($string);
+
+        foreach ($array[0] as $key => $value) {
+            $array['organique'][$key] = Str::contains($value, ['loi organique', 'LO.']);
+        }
+
+        return $array;
     }
 
     public function decret($string)
