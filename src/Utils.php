@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class Utils
 {   
-    static protected $coursDappel = [ 
+    static public $coursDappel = [ 
         'Agen',
         'Aix-en-Provence',
         'Amiens',
@@ -47,7 +47,7 @@ class Utils
         'Versailles',
     ];
 
-    static protected $codesFr = [
+    static public $codesFr = [
         'code civil',
         'code de commerce',
         'code de construction des appareils à pression non soumis à la flamme',
@@ -109,7 +109,7 @@ class Utils
         'livre des procédures fiscales',
     ];
 
-    static protected $typeDecisionsConstitutionnelles = [ 
+    static public $typeDecisionsConstitutionnelles = [ 
         'AN',
         'ART16',
         'AUTR',
