@@ -142,14 +142,17 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($v['numero'][1], 'T-175/04 PPU');
     }
         
-    // public function testCirculaire() 
-    // {
-    //     $v = $this->b->circulaire('
-    //         STRING
-    //     ');
-    //     $string = 'la circulaire du ministre de l\'intérieur et de la sécurité publique du 26 janvier 1993 relative à l\'organisation des élections législatives des 21 et 28 mars 1993;';
-    //     $string = 'la circulaire du ministre de l\'intérieur relative à l\'envoi des formulaires de présentation d\'un candidat à l\'élection présidentielle;';
-    // }
+    public function testCirculaire() 
+    {
+        $v = $this->b->circulaire('
+            la circulaire du ministre de l\'intérieur et de la sécurité publique du 26 janvier 1993 relative à l\'organisation des élections législatives des 21 et 28 mars 1993;
+            la circulaire du ministre de l\'intérieur relative à l\'envoi des formulaires de présentation d\'un candidat à l\'élection présidentielle;
+        ');
+
+        $this->assertEquals($v['institution'][0], 'ministre de l\'intérieur et de la sécurité publique');
+        $this->assertEquals($v['date'][0], '26 janvier 1993');
+        $this->assertEquals($v['institution'][1], 'ministre de l\'intérieur');
+    }
         
     // public function testConvention() 
     // {

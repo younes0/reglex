@@ -203,15 +203,15 @@ class Base
             ->then(' ')
             // ex: ministre de l'intérieur du 26 janvier 1993 relative à sujet
             ->eitherFind($this->builder->getNew() // ex: L. 
-                ->anythingBut(' du ')
-                ->asGroup('organisme1')
+                ->anythingBut('du ')
+                ->asGroup('institution1')
                 ->then(' ')
                 ->append(Common::duOuEndDateDu())
             )
             // ex: ministre de l\'intérieur relative à sujet
             ->orFind($this->builder->getNew()
-                ->anythingBut(' relative ')
-                ->asGroup('organisme2')
+                ->anythingBut('relative ')
+                ->asGroup('institution2')
                 ->maybe(' ')
             )
             ->then(' relative ')->anyOf(['à', 'au', 'aux'])->then(' ')
@@ -220,7 +220,15 @@ class Base
             ->then(';')
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        $output = $regExp->findIn($string);
+
+        $output['institution'] = array_merge(
+            array_filter($output['institution1']),
+            array_filter($output['institution2'])
+        );
+        unset($output['institution1'], $output['institution2']);
+
+        return $output;
     }
 
     public function convention($string)
