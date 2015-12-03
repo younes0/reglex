@@ -9,7 +9,8 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "^5.1",
-        "gherkins/regexpbuilderphp": "^0.7.4"
+        "gherkins/regexpbuilderphp": "^0.7.4",
+        "raulfraile/ladybug": "^1.0"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master"
