@@ -31,7 +31,7 @@ class ExtraUsageTest extends \PHPUnit_Framework_TestCase
     public function testDccConsiderant()    
     {
         $string1 = '1. Considérant que le blabla ;';
-        $string2 = '21. Considérant que blabla ;';
+        $string2 = '30. Considérant que blabla ;';
 
         $v = $this->extra->dccConsiderant($string1.PHP_EOL.$string2);
 
@@ -53,6 +53,15 @@ class ExtraUsageTest extends \PHPUnit_Framework_TestCase
     
     public function testDccMembres()    
     {
-        $v = $this->extra->testdccMembres($string1);
+        $v = $this->extra->dccMembres('Délibéré par le Conseil constitutionnel dans sa séance du 23 juillet 2015, où siégeaient : M. Jean-Louis DEBRÉ, Président, Mmes Claire BAZY MALAURIE, Nicole BELLOUBET, MM. Guy CANIVET, Michel CHARASSE, et Mme Nicole MAESTRACCI.');
+
+        $this->assertEquals($v, [
+            "Claire BAZY MALAURIE",
+            "Guy CANIVET",
+            "Jean-Louis DEBRÉ",
+            "Michel CHARASSE",
+            "Nicole BELLOUBET",
+            "Nicole MAESTRACCI",
+        ]);
     }
 }

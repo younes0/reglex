@@ -59,20 +59,32 @@ class Extra
     public function dccMembres($string)
     {
         $regExp = $this->builder->getNew()->ignoreCase()
-            ->then('où siégeaient ')
+            ->then('où siégeaient :')
             ->anything()
             ->asGroup('membres')
-            ->then('Rendu public')
+            ->then('.')
             ->getRegExp();
 
-        ldd($regExp->findIn($string));
+        $result = $regExp->findIn($string);
 
-        // $sub = après 'où siégeaient ' et avant '“Rendu public”';
-        // $sub = str_replace(['Président ', 'MM', 'Mme', 'MR', 'Mmes', '. '], ' ', $string);
-        // $members = explode(',' $sub);
-        // $members = array_map('trim', $members);
-        // asort($members);
+        if ( !isset($result['membres'])) {
+            return null;
+        }
 
-        // return $members;
+        $string  = $result['membres'];
+        $string  = str_replace([' et ', 'Président,', '.'], ' ', $string);
+        $membres = explode(',', $string);
+        
+        $toReplace = array_map(function($value) { 
+            return $value.' ';
+        }, Utils::$titresCivilite); 
+
+        $membres = array_map(function($value) use ($toReplace) {
+            return trim(str_replace($toReplace, '', $value));
+        }, $membres);
+        
+        sort($membres);
+
+        return array_filter($membres);
     }
 }

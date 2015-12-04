@@ -22,6 +22,14 @@ class Utils
         'décembre',
     ];
 
+    static public $titresCivilite = [
+        'Mmes', 
+        'Mme', 
+        'MM', 
+        'MR', 
+        'M',
+    ];
+
     static public $coursDappel = [ 
         'Agen',
         'Aix-en-Provence',
