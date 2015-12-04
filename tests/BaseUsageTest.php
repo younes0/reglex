@@ -61,17 +61,19 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($v['date'][1], '7 novembre 1958');
     }
         
-//     public function testAvis() 
-//     {
-//         $v = $this->b->avis('
-//             l\'avis de l\'Assemblée territoriale de la Polynésie française
-//             l\'avis de la Commission nationale de l\'informatique et des libertés;
-//         ');
+    public function testAvis() 
+    {
+        $v = $this->b->avis('
+            l\'avis de la Assemblée territoriale de la Polynésie française en date du 25 novembre 1993 
+            l\'avis de la Commission nationale de l\'informatique et des libertés 
+            avis du Président de l\'Assemblée nationale inséré au Journal officiel de la République française du 16 mars 2007
+        ');
 // ldd($v);
-//         $this->assertEquals($v['institution'][0], 'Assemblée territoriale de la Polynésie française');
-//         $this->assertEquals($v['institution'][1], 'Commission nationale de l\'informatique et des libertés');
-//         $this->assertEquals($v['date'][0], '25 novembre 1993');
-//     }
+        $this->assertEquals($v['institution'][0], 'Assemblée territoriale de la Polynésie française');
+        $this->assertEquals($v['date'][0], '25 novembre 1993');
+        $this->assertEquals($v['institution'][1], 'Commission nationale de l\'informatique et des libertés');
+        $this->assertEquals($v['institution'][2], 'Président de l\'Assemblée nationale');
+    }
         
     public function testArrete() 
     {

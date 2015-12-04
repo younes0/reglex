@@ -82,12 +82,12 @@ class Base
     public function avis($string)
     {
         $regExp = $this->defaultBuilder()
-            ->then('avis ')
-            ->anyOf(['de', 'du'])->then(' ')->anyOf(['l\'', 'le ', 'la '])
-            ->something()->asGroup('institution')->reluctantly()
+            ->then('avis')
+            ->something()
+            ->append($this->builder->anyOf(Utils::$institutions))
+            ->asGroup('institution')
             ->maybe(' ')
             ->optional(Common::duOuEndDateDu())
-            ->maybe(';')
             ->getRegExp();
 
         return $regExp->findIn($string);

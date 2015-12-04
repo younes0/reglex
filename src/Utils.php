@@ -124,6 +124,13 @@ class Utils
         'livre des procédures fiscales',
     ];
 
+    // later: à compléter
+    static public $institutions = [
+        'Assemblée territoriale de la Polynésie française',
+        'Commission nationale de l\'informatique et des libertés',
+        'Président de l\'Assemblée nationale',
+    ];
+
     static public $typeDecisionsConstitutionnelles = [ 
         'ART16',
         'AUTR',
