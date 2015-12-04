@@ -12,9 +12,14 @@ class Base
         $this->builder = new RegExpBuilder();
     }
 
+    protected function defaultBuilder()
+    {
+        return $this->builder->getNew()->ignoreCase()->globalMatch();
+    }
+
     public function loi($string)
     {
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->eitherFind($this->builder->getNew() // ex: L. 
                 ->anyOf(['L.', 'LO.'])
             )
@@ -44,9 +49,7 @@ class Base
 
     public function decret($string)
     {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('décret ')
             ->append(Common::numero(Common::twoNumbers()))
             ->getRegExp();
@@ -56,9 +59,7 @@ class Base
 
     public function decretLoi($string)
     {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('décret-loi du ')
             ->append(Common::dateLettres())
             ->asGroup('date')
@@ -69,9 +70,7 @@ class Base
 
     public function ordonnance($string)
     {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('ordonnance ')
             ->eitherFind(Common::numero(Common::twoNumbers()))
             ->orFind(Common::duOuEndDateDu())
@@ -82,9 +81,7 @@ class Base
 
     public function avis($string)
     {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('avis ')
             ->anyOf(['de', 'du'])->then(' ')->anyOf(['l\'', 'le ', 'la '])
             ->something()->asGroup('institution')->reluctantly()
@@ -98,9 +95,7 @@ class Base
 
     public function arrete($string)
     {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('arrêté ')
             ->optional($this->builder->getNew()
                 ->anyOf(['préfectoral', 'ministériel', 'municipal', 'interministériel'])
@@ -117,9 +112,7 @@ class Base
     
     protected function arretCaEtJugementTribunalFin()
     {
-        $this->builder = new RegExpBuilder;
-
-        return $this->builder
+        return $this->builder->getNew()
             ->maybe(', ')
             ->optional($this->builder->getNew()
                 ->then('siégeant en matière ')
@@ -129,13 +122,13 @@ class Base
             )
             ->maybe(' ')
             ->optional(Common::duOuEndDateDu());
+
+        return $regExp->findIn($string);
     }
 
     public function arretCa($string)
     {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('arrêt de la cour d\'appel de ')
             ->min(1)->from(Utils::$coursDappel)
             ->asGroup('ville')
@@ -148,9 +141,7 @@ class Base
     // later: array liste tribunaux
     public function jugementTribunal($string)
     {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('jugement du tribunal de ')
             ->anythingBut(',')
             ->asGroup('tribunal')
@@ -162,9 +153,7 @@ class Base
 
     public function arretCourCassation($string)
     {
-        $this->builder = new RegExpBuilder();
-        
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('arrêt de la Cour de cassation ')
             ->optional($this->builder->getNew()
                 ->then('(chambre ')
@@ -180,9 +169,7 @@ class Base
 
     public function arretCourJusticeUe($string)
     {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('arrêt de la cour de justice de l\'union européenne')
             ->maybe(' ')
             ->optional(Common::duOuEndDateDu())
@@ -195,9 +182,7 @@ class Base
 
     public function circulaire($string)
     {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('circulaire ')
             ->anyOf(['de', 'du'])
             ->then(' ')
@@ -233,9 +218,7 @@ class Base
 
     public function directiveUe($string)
     {
-        $this->builder = new RegExpBuilder();
-        
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('directive ')
             ->append(Common::twoNumbers('/')->then('/CE'))->asGroup('numero')
             ->getRegExp();
@@ -246,9 +229,7 @@ class Base
     // later: multiple numéros (ex: eitherFind(Common::numeros))
     public function decisionClassiqueCe($string)
     {
-        $this->builder = new RegExpBuilder();
-        
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('décision du Conseil d\'État ')
             ->append(Common::numero(Common::oneNumber()))
             ->maybe(' ')
@@ -261,9 +242,7 @@ class Base
     // later: multiple numéros (ex: eitherFind(Common::numeros))
     public function decisionRenvoiCe($string)
     {
-        $this->builder = new RegExpBuilder();
-     
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('Conseil d\'Etat (décision ')
             ->append(Common::numero(Common::oneNumber()))
             ->getRegExp();
@@ -283,9 +262,7 @@ class Base
 
     public function decisionCadreUe($string)
     {
-        $this->builder = new RegExpBuilder();
-        
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('décision-cadre ')
             ->append(Common::numero(Common::twoNumbers('/')->then('/JAI')))
             ->getRegExp();
@@ -295,9 +272,7 @@ class Base
 
     public function decisionCc($string)
     {
-        $this->builder = new RegExpBuilder();
-        
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->append(Common::numero(
                 Common::twoNumbers()
                 ->then(' ')
@@ -310,9 +285,7 @@ class Base
 
     public function deliberationCc($string)
     {
-        $this->builder = new RegExpBuilder();
-        
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('délibération du Conseil constitutionnel ')
             ->append(Common::duOuEndDateDu())
             ->getRegExp();
@@ -322,9 +295,7 @@ class Base
 
     public function reglementCeOuUe($string)
     {
-        $this->builder = new RegExpBuilder();
-        
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('règlement (')
             ->append($this->builder->getNew()->anyOf(['UE', 'CE']))
             ->asGroup('institution')
@@ -337,9 +308,7 @@ class Base
 
     public function reglementCc($string)
     {
-        $this->builder = new RegExpBuilder();
-        
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->then('règlement ')
             ->append(Common::duOuEndDateDu())
             ->anythingBut('constitutionnalité')
@@ -350,9 +319,7 @@ class Base
 
     public function decisionOuArretCedh($string)
     {
-        $this->builder = new RegExpBuilder();
-        
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
+        $regExp = $this->defaultBuilder()
             ->anyOf(['arrêt', 'décision'])
             ->then(' de la Cour européenne des droits de l\'homme ')
             ->eitherFind(Common::numero(Common::twoNumbers('/')))
