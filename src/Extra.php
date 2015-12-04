@@ -16,12 +16,14 @@ class Extra
         return $this->builder->getNew()->ignoreCase()->globalMatch();
     }
 
-    protected function dccVisaOuConsiderant($start, $string)
+    protected function dccVisaOuConsiderant(RegExpBuilder $start, $string)
     {
         $regExp = $this->defaultBuilder()
-            ->startOfLine()->then($start)
+            ->multiLine()
+            ->startOfLine()
+            ->append($start)
             ->anything()
-            ->then(';')->endOfLine()
+            ->then(';')
             ->getRegExp();
         
         return $regExp->findIn($string);
@@ -29,15 +31,21 @@ class Extra
 
     public function dccVisa($string)
     {
-        $this->dccVisaOuConsiderant('Vu ');
+        return $this->dccVisaOuConsiderant(
+            $this->builder->getNew()->then('Vu '),
+            $string
+        );
     }
 
-    public function dccConsiderant()
+    public function dccConsiderant($string)
     {
-        $this->dccVisaOuConsiderant('Considérant ');
+        return $this->dccVisaOuConsiderant(
+            $this->builder->getNew()->min(1)->digits()->then('. Considérant '),
+            $string
+        );
     }
 
-    public function dccOuCommentaireDccPremierParagraphe()
+    public function dccOuCommentaireDccPremierParagraphe($string)
     {
         $regExp = $this->builder->getNew()->ignoreCase()
             ->startOfLine()->then('Le Conseil constitutionnel a été saisi')
@@ -48,7 +56,7 @@ class Extra
         return $regExp->findIn($string);
     }
 
-    public function dccMembres()
+    public function dccMembres($string)
     {
         $regExp = $this->builder->getNew()->ignoreCase()
             ->then('où siégeaient ')
