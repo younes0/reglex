@@ -287,6 +287,8 @@ class Base
         $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
             ->then('décision du Conseil d\'État ')
             ->append(Common::numero(Common::oneNumber()))
+            ->maybe(' ')
+            ->optional(Common::duOuEndDateDu())
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -307,24 +309,7 @@ class Base
 
     public function constitution($string)
     {
-        $values = [
-            'constitution de 1958' => [
-                'constitution du 4 octobre 1958',
-            ],
-            'ddhc' => [
-                'déclaration des droits de l\'homme et du citoyen',
-                'déclaration du 26 août 1789',
-            ],
-            'préambule de 1946' => [
-                'préambule de la constitution',
-                'préambule du 27 octobre 1946',
-            ],
-            'charte de l\'environnement' => [
-                'charte de 2004',
-            ],
-        ];
-
-        return $this->findStringsIn($values, $string);
+        return $this->findStringsIn(Utils::$constitutions, $string);
     }
 
     protected function findStringsIn($array, $string)

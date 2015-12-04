@@ -110,21 +110,38 @@ class Utils
     ];
 
     static public $typeDecisionsConstitutionnelles = [ 
-        'AN',
         'ART16',
         'AUTR',
-        'D',
-        'DC',
         'ELEC',
         'FNR',
-        'I',
-        'L',
         'LOM',
-        'LP',
         'ORGA',
         'PDR',
         'QPC',
         'REF',
         'SEN',
+        'AN',
+        'DC',
+        'LP',
+        'I',
+        'L',
+        'D',
+    ];
+
+    static public $constitutions = [ 
+        'constitution de 1958' => [
+            'constitution du 4 octobre 1958',
+        ],
+        'ddhc' => [
+            'déclaration des droits de l\'homme et du citoyen',
+            'déclaration du 26 août 1789',
+        ],
+        'préambule de 1946' => [
+            'préambule de la constitution',
+            'préambule du 27 octobre 1946',
+        ],
+        'charte de l\'environnement' => [
+            'charte de 2004',
+        ],
     ];
 }

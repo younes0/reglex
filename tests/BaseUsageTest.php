@@ -164,71 +164,74 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
     //     // $string = 'La Convention de sauvegarde des droits de l\'homme et des libertés fondamentales, signée à Rome le 4 novembre 1950 ;';
     // }
         
-    // public function testDirectiveUe() 
-    // {
-    //     $v = $this->b->directiveUe('
-    //         STRING
-    //     ');
-    //     $string = 'la directive 2003/54/CE';
-    // }
-        
-    // public function testDecisionClassiqueCe() 
-    // {
-    //     $v = $this->b->decisionClassiqueCe('
-    //         STRING
-    //     ');
+    public function testDirectiveUe() 
+    {
+        $v = $this->b->directiveUe('
+            la directive 2003/54/CE 
+            la directive 23/54/CE 
+        ');
 
-    //     $string = 'la décision du Conseil d\'État n° 222160 du 30 juin 2003';
-    //     // $string = 'la décision du Conseil d\'État nos 265582 et 273093 du 13 mars 2006 ;';
-    // }
-        
-    // public function testDecisionRenvoiCe() 
-    // {
-    //     $v = $this->b->decisionRenvoiCe('
-    //         STRING
-    //     ');
+        $this->assertEquals($v['numero'][0], '2003/54/CE');
+        $this->assertEquals($v['numero'][1], '23/54/CE');
+    }
+    
+    public function testDecisionClassiqueCe() 
+    {
+        $v = $this->b->decisionClassiqueCe('
+            la décision du Conseil d\'État n° 222160 du 30 juin 2003
+            la décision du Conseil d\'État nos 265582 et 273093 du 13 mars 2006
+        ');
 
-    //     $string = 'par le Conseil d\'Etat (décision n° 387472 du même jour) ;';
-    //     // $string = 'par le Conseil d\'Etat Conseil d\'État (décision nos 380743, 380744 et 380745 du 23 juillet 2014) ;';
-    // }
+        $this->assertEquals($v['numero'][0], '222160');
+        $this->assertEquals($v['date'][0], '30 juin 2003');
+    }
         
-    // public function testConstitution() 
-    // {
-    //     $v = $this->b->constitution('
-    //         STRING
-    //     ');
+    public function testDecisionRenvoiCe() 
+    {
+        $v = $this->b->decisionRenvoiCe('
+            par le Conseil d\'Etat (décision n° 387472 du même jour) 
+            par le Conseil d\'Etat Conseil d\'État (décision nos 380743, 380744 et 380745 du 23 juillet 2014) 
+        ');
 
-    //     $string = '
-    //         constitution du 4 octobre 1958 
-    //         constitution de 1958 
-    //         préambule de 1946 
-    //         préambule du 27 octobre 1946
-    //     ';
-    // }
+        $this->assertEquals($v['numero'][0], '387472');
+    }
         
-    // public function testDecisionCadreUe()    
-    // {
-    //     $v = $this->b->decisionCadreUe('
-    //         STRING
-    //     ');
+    public function testConstitution() 
+    {
+        $v = $this->b->constitution('
+            constitution du 4 octobre 1958 
+            constitution de 1958 
+            préambule du 27 octobre 1946
+        ');
 
-    //     $string = 'la décision-cadre n° 2002/584/JAI';
-    // }
+        $this->assertEquals($v['constitution de 1958'], 2);
+        $this->assertEquals($v['préambule de 1946'], 1);
+    }
         
-    // public function testDecisionCc() 
-    // {
-    //     $v = $this->b->decisionCc('
-    //         STRING
-    //     ');
+    public function testDecisionCadreUe()    
+    {
+        $v = $this->b->decisionCadreUe('
+            décision-cadre n° 2002/584/JAI
+        ');
 
-    //     $string = 'n° 2013-4793 AN';
-    //     $string = 'la décision du Conseil constitutionnel n° 2009-577 DC du 3 mars 2009';
-    // }
+        $this->assertEquals($v['numero'][0], '2002/584/JAI');
+    }
+        
+    public function testDecisionCc() 
+    {
+        $v = $this->b->decisionCc('
+            n° 2013-4793 AN 
+            la décision du Conseil constitutionnel n° 2009-577 DC du 3 mars 2009
+        ');
+
+        $this->assertEquals($v['numero'][0], '2013-4793 AN');
+        $this->assertEquals($v['numero'][1], '2009-577 DC');
+    }
         
     // public function testDeliberationCc() 
     // {
     //     $v = $this->b->deliberationCc('
-    //         STRING
+    //         délibération du Conseil constitutionnel en date du 23 octobre 1987
     //     ');
 
     //     $string = 'délibération du Conseil constitutionnel en date du 23 octobre 1987';
