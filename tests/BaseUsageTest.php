@@ -228,49 +228,50 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($v['numero'][1], '2009-577 DC');
     }
         
-    // public function testDeliberationCc() 
-    // {
-    //     $v = $this->b->deliberationCc('
-    //         délibération du Conseil constitutionnel en date du 23 octobre 1987
-    //     ');
+    public function testDeliberationCc() 
+    {
+        $v = $this->b->deliberationCc('
+            délibération du Conseil constitutionnel en date du 23 octobre 1987 
+            délibération du Conseil constitutionnel du 23 octobre 1984 
+        ');
 
-    //     $string = 'délibération du Conseil constitutionnel en date du 23 octobre 1987';
-    // }
+        $this->assertEquals($v['date'][0], '23 octobre 1987');
+        $this->assertEquals($v['date'][1], '23 octobre 1984');
+    }
         
-    // public function testReglementCeOuUe() 
-    // {
-    //     $v = $this->b->reglementCeOuUe('
-    //         STRING
-    //     ');
+    public function testReglementCeOuUe() 
+    {
+        $v = $this->b->reglementCeOuUe('
+            le règlement (UE) n° 1175/2011 
+            le règlement (CE) n° 1466/97 
+        ');
 
-    //     $string = 'le règlement (UE) n° 1175/2011 ';
-    //     $string = 'le règlement (CE) n° 1466/97 ';
-    // }
+        $this->assertEquals($v['numero'][0], '1175/2011');
+        $this->assertEquals($v['institution'][0], 'UE');
+        $this->assertEquals($v['numero'][1], '1466/97');
+        $this->assertEquals($v['institution'][1], 'CE');
+    }
         
-    // public function testReglementCc() 
-    // {
-    //     $v = $this->b->reglementCc('
-    //         STRING
-    //     ');
+    public function testReglementCc() 
+    {
+        $v = $this->b->reglementCc('
+            règlement du 4 février 2010 blalabla constitutionnalité 
+            règlement du 3 février 2010 blalabla constitutionnalité 
+        ');
 
-    //     $string = 'règlement du 4 février 2010 blalabla constitutionnalité';
-    // }
+        $this->assertEquals($v['date'][0], '4 février 2010');
+        $this->assertEquals($v['date'][1], '3 février 2010');
+    }
         
-    // public function testDecisionOuArretCedh()
-    // {
-    //     $v = $this->b->decisionOuArretCedh('
-    //         STRING
-    //     ');
-        
-    //     $string = 'l\'arrêt de la Cour européenne des droits de l\'homme n° 4774/98 (affaire Leyla Sahin c. Turquie) du 29 juin 2004 ;';
-    //     $string = 'décision de la Cour européenne des droits de l\'homme du 15 janvier 2009';
+    public function testDecisionOuArretCedh()
+    {
+        $v = $this->b->decisionOuArretCedh('
+            l\'arrêt de la Cour européenne des droits de l\'homme n° 4774/98 (affaire Leyla) du 29 juin 2004 
+            décision de la Cour européenne des droits de l\'homme du 15 janvier 2009
+            Dans sa décision ou dans son arrêt (date ou référence) la Cour européenne des droits de l`\'homme
+        ');
 
-    //     $string = '
-    //         décision de la Cour européenne des droits de l\'homme du 15 janvier 2009 
-    //         arrêt de la Cour européenne des droits de l\'homme n° 4774/98
-    //     ';
-
-    //     // later
-    //     // $string = 'Dans sa décision ou dans son arrêt (date ou référence) la Cour européenne des droits de l'homme';
-    // }
+        $this->assertEquals($v['numero'][0], '4774/98');
+        $this->assertEquals($v['date'][1], '15 janvier 2009');
+    }
 }

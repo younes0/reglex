@@ -7,20 +7,20 @@ use Gherkins\RegExpBuilderPHP\RegExpBuilder;
 class Common
 {   
     // later: ajouter mois
+    // ex: 24 mai 1938
     static public function dateLettres()
     {
-        // ex: 24 mai 1938
         return (new RegExpBuilder)->getNew() 
             ->min(1)->max(2)->digits()
             ->then(' ')
-            ->anything()
+            ->anyOf(Utils::$mois)
             ->then(' ')
             ->exactly(4)->digits();
     }
 
+    // ex: [du|en date du] 7 novembre 1958  
     static public function duOuEndDateDu($name = 'date')
     {
-        // ex: [du|en date du] 7 novembre 1958  
         return (new RegExpBuilder)->getNew()
             ->anyOf(['en date du', 'du'])
             ->then(' ')
@@ -36,9 +36,9 @@ class Common
             ->digits();
     }
     
+    // ex: 123-1234
     static public function twoNumbers($separator = '-')
     {   
-        // ex: 123-1234
         return (new RegExpBuilder)->getNew()
             ->min(1)->digits()
             ->then($separator)

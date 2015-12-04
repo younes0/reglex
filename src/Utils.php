@@ -7,6 +7,21 @@ use Illuminate\Support\Str;
 
 class Utils
 {   
+    static public $mois = [
+        'janvier',
+        'février',
+        'mars',
+        'avril',
+        'mai',
+        'juin',
+        'juillet',
+        'août',
+        'septembre',
+        'octobre',
+        'novembre',
+        'décembre',
+    ];
+
     static public $coursDappel = [ 
         'Agen',
         'Aix-en-Provence',
