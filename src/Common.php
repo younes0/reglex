@@ -53,4 +53,21 @@ class Common
             ->append($regExp)
             ->asGroup($name);
     }
+
+    static public function countStrings($array, $string)
+    {
+        $found = [];
+
+        foreach ($array as $key => $values) {
+            $found[$key] = 0;
+
+            foreach ($values as $value) {
+                if ($count = substr_count($string, $value)) {
+                    $found[$key]+= $count;
+                }
+            }
+        }
+
+        return $found;
+    }
 }

@@ -154,16 +154,6 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($v['institution'][1], 'ministre de l\'intérieur');
     }
         
-    // public function testConvention() 
-    // {
-    //     $v = $this->b->convention('
-    //         STRING
-    //     ');
-    //     $string = 'la Convention de Genève du 28 juillet 1951 relative au statut des réfugiés et le protocole signé à New York le 31 janvier 1967 ;';
-    //     // $string = 'la Convention de sauvegarde des droits de l\'homme et des libertés fondamentales ;';
-    //     // $string = 'La Convention de sauvegarde des droits de l\'homme et des libertés fondamentales, signée à Rome le 4 novembre 1950 ;';
-    // }
-        
     public function testDirectiveUe() 
     {
         $v = $this->b->directiveUe('
@@ -204,8 +194,19 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             préambule du 27 octobre 1946
         ');
 
-        $this->assertEquals($v['constitution de 1958'], 2);
-        $this->assertEquals($v['préambule de 1946'], 1);
+        $this->assertEquals($v['constitution 1958'], 2);
+        $this->assertEquals($v['préambule 1946'], 1);
+    }
+
+    public function testConvention() 
+    {
+        $v = $this->b->convention('
+            la Convention de Genève du 28 juillet 1951 relative au statut des réfugiés et le protocole signé à New York le 31 janvier 1967
+            La Convention de sauvegarde des droits de l\'homme et des libertés fondamentales, signée à Rome le 4 novembre 1950
+        ');
+
+        $this->assertEquals($v['convention genève 1951'], 1);
+        $this->assertEquals($v['convention rome 1950'], 1);
     }
         
     public function testDecisionCadreUe()    

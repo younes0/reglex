@@ -144,19 +144,31 @@ class Utils
     ];
 
     static public $constitutions = [ 
-        'constitution de 1958' => [
+        'constitution 1958' => [
+            'constitution de 1958',
             'constitution du 4 octobre 1958',
         ],
         'ddhc' => [
             'déclaration des droits de l\'homme et du citoyen',
             'déclaration du 26 août 1789',
         ],
-        'préambule de 1946' => [
+        'préambule 1946' => [
+            'préambule de 1946',
             'préambule de la constitution',
             'préambule du 27 octobre 1946',
         ],
-        'charte de l\'environnement' => [
+        'charte environnement' => [
+            'charte de l\'environnement',
             'charte de 2004',
+        ],
+    ];
+
+    static public $conventions = [ 
+        'convention genève 1951' => [
+            'la Convention de Genève du 28 juillet 1951',
+        ],
+        'convention rome 1950' => [
+            'Convention de sauvegarde des droits de l\'homme et des libertés fondamentales',
         ],
     ];
 }

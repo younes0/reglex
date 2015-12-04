@@ -231,42 +231,6 @@ class Base
         return $output;
     }
 
-    public function convention($string)
-    {
-        $this->builder = new RegExpBuilder();
-
-        $regExp = $this->builder->getNew()->ignoreCase()->globalMatch()
-            ->then('convention ')->anyOf(['de', 'des', 'du'])->then(' ')
-            ->something()
-            ->asGroup('nom')
-            ->maybe(' ')
-        // ->anyOf(['relative', ',', ';', '.'])
-        // ->anyOf(['relative', ','])
-        // ->something()
-        // ->asGroup('sujet')
-        // ->anyOf([';', '.'])
-            ->getRegExp();
-
-        return $regExp->findIn($string);
-
-
-        $output = $regExp->findIn($string);
-
-        // TODO: multi level
-        // scinder nom en dates
-        if (isset($output['nom'])) {
-            $regExp = $this->builder->getNew()->startOfInput()->ignoreCase()
-                ->anything()
-                ->asGroup('nom')
-                ->append(Common::duOuEndDateDu())
-                ->getRegExp();
-
-            $output = $regExp->findIn(trim($output['nom']));
-        }
-
-        ldd($output);
-    }
-
     public function directiveUe($string)
     {
         $this->builder = new RegExpBuilder();
@@ -309,28 +273,12 @@ class Base
 
     public function constitution($string)
     {
-        return $this->findStringsIn(Utils::$constitutions, $string);
+        return Common::countStrings(Utils::$constitutions, $string);
     }
 
-    protected function findStringsIn($array, $string)
+    public function convention($string)
     {
-        $found = [];
-
-        foreach ($array as $key => $values) {
-            $found[$key] = 0;
-
-            if ($count = substr_count($string, $key)) {
-                $found[$key] = $count;
-            }
-
-            foreach ($values as $value) {
-                if ($count = substr_count($string, $value)) {
-                    $found[$key]+= $count;
-                }
-            }
-        }
-
-        return $found;
+        return Common::countStrings(Utils::$conventions, $string);
     }
 
     public function decisionCadreUe($string)
