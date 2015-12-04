@@ -10,7 +10,7 @@ class Common
     // ex: 24 mai 1938
     static public function dateLettres()
     {
-        return (new RegExpBuilder)->getNew() 
+        return (new RegExpBuilder)
             ->min(1)->max(2)->digits()
             ->then(' ')
             ->anyOf(Utils::$mois)
@@ -21,7 +21,7 @@ class Common
     // ex: [du|en date du] 7 novembre 1958  
     static public function duOuEndDateDu($name = 'date')
     {
-        return (new RegExpBuilder)->getNew()
+        return (new RegExpBuilder)
             ->anyOf(['en date du', 'du'])
             ->then(' ')
             ->append(static::dateLettres())
@@ -30,16 +30,13 @@ class Common
 
     static public function oneNumber()
     {
-        return (new RegExpBuilder)
-            ->getNew()
-            ->min(1)
-            ->digits();
+        return (new RegExpBuilder)->min(1)->digits();
     }
     
     // ex: 123-1234
     static public function twoNumbers($separator = '-')
     {   
-        return (new RegExpBuilder)->getNew()
+        return (new RegExpBuilder)
             ->min(1)->digits()
             ->then($separator)
             ->min(1)->digits();
