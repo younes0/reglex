@@ -64,4 +64,21 @@ class ExtraUsageTest extends \PHPUnit_Framework_TestCase
             "Nicole MAESTRACCI",
         ]);
     }
+
+    public function testRefDocAuteurs()    
+    {
+        $v = $this->extra->refDocAuteurs('
+M. Christian Eckert, Rapport sur le projet de loi de finances pour 2013, Assemblée nationale, XIVème.
+Nicolas Molfessis, Le Conseil constitutionnel et le droit privé, LGDJ, 1997, n° 169.
+Voir Claire Neirnick, , « Le mariage homosexuel ou l’arbre qui cache la forêt », Droit de la famille, octobre 2012, p8 .s
+Pierre Murat, « La Constitution et le mariage : regard d’un privatiste », Nouveaux Cahiers du Conseil
+Nathalie Merley, « La non-consécration par le Conseil constitutionnel de principes fondamentaux reconnus par les lois de la République », RFDA mai-juin 2005, p. 621 et s.
+');
+
+        $this->assertEquals($v['auteur'][0], 'Christian Eckert');
+        $this->assertEquals($v['auteur'][1], 'Nicolas Molfessis');
+        $this->assertEquals($v['auteur'][2], 'Claire Neirnick');
+        $this->assertEquals($v['auteur'][3], 'Pierre Murat');
+        $this->assertEquals($v['auteur'][4], 'Nathalie Merley');
+    }
 }

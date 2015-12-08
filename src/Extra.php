@@ -87,4 +87,26 @@ class Extra
 
         return array_filter($membres);
     }
+
+    public function refDocAuteurs($string)
+    {
+        $regExp = $this->defaultBuilder()
+            ->multiLine()
+            ->lineBreak()
+            ->startOfLine()
+            ->maybe('Voir ')
+            ->optional($this->builder->getNew()
+                ->anyOf(Utils::$titresCivilite)
+                ->maybe('.')
+                ->then(' ')
+            )
+            ->anythingBut(',')
+            ->asGroup('auteur')
+            ->then(',')
+            ->anything()
+            ->endOfLine()
+            ->getRegExp();
+
+        return $regExp->findIn($string);
+    }
 }
