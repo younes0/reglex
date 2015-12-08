@@ -17,13 +17,13 @@ Les expressions regulières sont générées grâce à [RegExpBuilder](https://g
 // ---------------------------
 $a = (new Base)->avis('
     l\'avis de la Assemblée territoriale de la Polynésie française en date du 25 novembre 1993 
-    l\'avis de la Commission nationale de l\'informatique et des libertés 
+    l\'avis de la Commission nationale de l\'informatique et des libertés inséré au Journal officiel de la République française 
 ');
 
 echo($a['institution'][0]); // 'Assemblée territoriale de la Polynésie française'
 echo($a['date'][1]); // '25 novembre 1993'
 
-echo($a['institution'][1]); // 'Commission nationale de l\'informatique et des ][0], '25 novembre 1993');
+echo($a['institution'][1]); // 'Commission nationale de l\'informatique et des libertés);
 
 // directives européennes
 // ---------------------------
