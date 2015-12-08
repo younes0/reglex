@@ -1,26 +1,33 @@
 # Reglex
 
-Extracteur de normes juridiques dans un texte.  
+Extracteur de normes juridiques depuis une chaîne de caractères
+
+## Introduction
+
 Librairie PHP developpée dans le cadre de la thèse d'[Emma Grego](mailto:grego.emma@yahoo.fr)
 
-Les expressions regulières sont générées grâce à [RegExpBuilder](https://github.com/gherkins/regexpbuilderphp) qui permet de réutiliser plus facilement certaines règles et surtout, sont beaucoup plus lisibles pour les non-développeurs.
+Les expressions regulières sont générées grâce à [RegExpBuilder](https://github.com/gherkins/regexpbuilderphp) qui permet de réutiliser plus facilement certaines règles et surtout, sont beaucoup plus lisibles pour les non-développeurs. Une [version Javascript](https://github.com/thebinarysearchtree/regexpbuilderjs) de la librairie existe aussi.
 
 **En cours de développement, BC fortement possibles**
 
 ## Exemples
 
 ```php
-$v = $this->base->avis('
+// avis
+// ---------------------------
+$a = (new Base)->avis('
     l\'avis de la Assemblée territoriale de la Polynésie française en date du 25 novembre 1993 
     l\'avis de la Commission nationale de l\'informatique et des libertés 
-    avis du Président de l\'Assemblée nationale inséré au Journal officiel de la République française du 16 mars 2007
 ');
-// ldd($v);
-        $this->assertEquals($v['institution'][0], 'Assemblée territoriale de la Polynésie française');
-        $this->assertEquals($v['date'][0], '25 novembre 1993');
+
+echo($a['institution'][0]); // 'Assemblée territoriale de la Polynésie française'
+echo($a['date'][1]); // '25 novembre 1993'
+
+echo($a['institution'][1]); // 'Commission nationale de l\'informatique et des ][0], '25 novembre 1993');
 
 // directives européennes
-$a = $this->base->directiveUe('
+// ---------------------------
+$a = (new Base)->directiveUe('
     la directive 2003/54/CE 
     la directive 23/54/CE 
 ');
@@ -28,6 +35,8 @@ $a = $this->base->directiveUe('
 echo($a['numero'][0]); // '2003/54/CE'
 echo($a['numero'][1]); // '23/54/CE'
 ```
+
+Plus d'exemples dans les Tests.
 
 ## TODO
 
