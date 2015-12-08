@@ -40,6 +40,7 @@ Plus d'exemples dans les Tests.
 
 ## TODO
 
+- [ ] Commentaires
 - [ ] Gérer articles (art. 8 de la loi machin-truc)
 - [ ] Gérer déclinaison numéros multiples (nos 14, 15 et 18)
 - [ ] Formater differement la sortie des méthodes (`$array[0]['numero']` au lieu de `$array['numero'][0]`)
