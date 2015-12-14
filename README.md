@@ -38,6 +38,19 @@ echo($a['numero'][1]); // '23/54/CE'
 
 Plus d'exemples dans les Tests.
 
+## Installation
+
+ajout repo composer.json:
+```json
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "git@github.com:younes0/regexpbuilderphp.git"
+    }
+],
+```
+puis `composer require younes0/reglex`
+
 ## TODO
 
 - [ ] Commentaires
