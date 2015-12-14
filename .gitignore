@@ -1,1 +1,7 @@
 vendor
+.DS_STORE
+.idea
+composer.phar
+composer.lock
+composer-test.lock
+
