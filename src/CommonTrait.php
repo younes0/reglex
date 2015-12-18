@@ -67,4 +67,25 @@ trait CommonTrait
 
         return $found;
     }
+
+    protected function reformat($array)
+    {
+        $output = [];
+
+        foreach ($array as $parentKey => $values) {
+            if (is_integer($parentKey) and $parentKey !== 0) {
+                continue;
+            }
+        
+            foreach ($values as $childKey => $value) {
+                // convert to null
+                if ($value === '') $value = null;
+
+                $key = ($parentKey === 0) ? 'raw' : $parentKey;
+                $output[$childKey][$key] = $value;
+            }
+        }
+
+        return $output;
+    }
 }

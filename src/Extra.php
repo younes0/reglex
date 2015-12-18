@@ -109,6 +109,6 @@ class Extra
             ->endOfLine()
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 }

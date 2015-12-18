@@ -75,10 +75,10 @@ Pierre Murat, « La Constitution et le mariage : regard d’un privatiste », No
 Nathalie Merley, « La non-consécration par le Conseil constitutionnel de principes fondamentaux reconnus par les lois de la République », RFDA mai-juin 2005, p. 621 et s.
 ');
 
-        $this->assertEquals($v['auteur'][0], 'Christian Eckert');
-        $this->assertEquals($v['auteur'][1], 'Nicolas Molfessis');
-        $this->assertEquals($v['auteur'][2], 'Claire Neirnick');
-        $this->assertEquals($v['auteur'][3], 'Pierre Murat');
-        $this->assertEquals($v['auteur'][4], 'Nathalie Merley');
+        $this->assertEquals($v[0]['auteur'], 'Christian Eckert');
+        $this->assertEquals($v[1]['auteur'], 'Nicolas Molfessis');
+        $this->assertEquals($v[2]['auteur'], 'Claire Neirnick');
+        $this->assertEquals($v[3]['auteur'], 'Pierre Murat');
+        $this->assertEquals($v[4]['auteur'], 'Nathalie Merley');
     }
 }

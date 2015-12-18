@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class Base
 {   
     use CommonTrait;
-    
+
     public function __construct()
     {
         $this->builder = new RegExpBuilder();
@@ -40,13 +40,13 @@ class Base
             )
             ->getRegExp();
         
-        $array = $regExp->findIn($string);
+        $results = $regExp->findIn($string);
 
-        foreach ($array[0] as $key => $value) {
-            $array['organique'][$key] = Str::contains($value, ['loi organique', 'LO.']);
+        foreach ($results[0] as $key => $value) {
+            $results['organique'][$key] = Str::contains($value, ['loi organique', 'LO.']);
         }
 
-        return $array;
+        return $this->reformat($results);
     }
 
     public function decret($string)
@@ -56,7 +56,8 @@ class Base
             ->append($this->numero($this->twoNumbers()))
             ->getRegExp();
 
-        return $regExp->findIn($string);
+
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function decretLoi($string)
@@ -67,7 +68,7 @@ class Base
             ->asGroup('date')
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function ordonnance($string)
@@ -78,7 +79,7 @@ class Base
             ->orFind($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function avis($string)
@@ -92,7 +93,7 @@ class Base
             ->optional($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function arrete($string)
@@ -109,7 +110,7 @@ class Base
             ->append($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
     
     protected function arretCaEtJugementTribunalFin()
@@ -125,7 +126,7 @@ class Base
             ->maybe(' ')
             ->optional($this->duOuEndDateDu());
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function arretCa($string)
@@ -137,7 +138,7 @@ class Base
             ->append($this->arretCaEtJugementTribunalFin())
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     // later: array liste tribunaux
@@ -150,7 +151,7 @@ class Base
             ->append($this->arretCaEtJugementTribunalFin())
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function arretCourCassation($string)
@@ -166,7 +167,7 @@ class Base
             ->append($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function arretCourJusticeUe($string)
@@ -179,7 +180,7 @@ class Base
             ->append($this->numero($this->builder->getNew()->anythingBut('PPU')))
             ->getRegExp();
     
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function circulaire($string)
@@ -215,7 +216,7 @@ class Base
         );
         unset($output['institution1'], $output['institution2']);
 
-        return $output;
+        return $this->reformat($output);
     }
 
     public function directiveUe($string)
@@ -225,7 +226,7 @@ class Base
             ->append($this->twoNumbers('/')->then('/CE'))->asGroup('numero')
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     // later: multiple numéros (ex: eitherFind($this->numeros))
@@ -238,7 +239,7 @@ class Base
             ->optional($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     // later: multiple numéros (ex: eitherFind($this->numeros))
@@ -249,7 +250,7 @@ class Base
             ->append($this->numero($this->oneNumber()))
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function constitution($string)
@@ -269,7 +270,7 @@ class Base
             ->append($this->numero($this->twoNumbers('/')->then('/JAI')))
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function decisionCc($string)
@@ -286,7 +287,7 @@ class Base
             ))
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function deliberationCc($string)
@@ -295,8 +296,8 @@ class Base
             ->then('délibération du Conseil constitutionnel ')
             ->append($this->duOuEndDateDu())
             ->getRegExp();
-
-        return $regExp->findIn($string);
+            
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function reglementCeOuUe($string)
@@ -309,7 +310,7 @@ class Base
             ->append($this->numero($this->twoNumbers('/')))
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function reglementCc($string)
@@ -320,7 +321,7 @@ class Base
             ->anythingBut('constitutionnalité')
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function decisionOuArretCedh($string)
@@ -332,6 +333,6 @@ class Base
             ->orFind($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $regExp->findIn($string);
+        return $this->reformat($regExp->findIn($string));
     }
 }

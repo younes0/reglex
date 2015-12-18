@@ -20,14 +20,13 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             LO. 1-1 du code général de la propriété des personnes publiques; 
             loi organique n° 2-2;
         ');
-
-        $this->assertEquals($v['numero'][0], '2111-4');
-        $this->assertEquals($v['numero'][1], '1-1');
-        $this->assertEquals($v['numero'][2], '2-2');
-        $this->assertEquals($v['organique'][0], false);
-        $this->assertEquals($v['organique'][1], true);
-        $this->assertEquals($v['organique'][2], true);
-        $this->assertEquals($v['code'][1], 'code général de la propriété des personnes publiques');
+        $this->assertEquals($v[0]['numero'], '2111-4');
+        $this->assertEquals($v[1]['numero'], '1-1');
+        $this->assertEquals($v[2]['numero'], '2-2');
+        $this->assertEquals($v[0]['organique'], false);
+        $this->assertEquals($v[1]['organique'], true);
+        $this->assertEquals($v[2]['organique'], true);
+        $this->assertEquals($v[1]['code'], 'code général de la propriété des personnes publiques');
     }
         
     public function testDecret() 
@@ -37,8 +36,8 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             décret n° 2006-1231
         ');
 
-        $this->assertEquals($v['numero'][0], '86-451');
-        $this->assertEquals($v['numero'][1], '2006-1231');
+        $this->assertEquals($v[0]['numero'], '86-451');
+        $this->assertEquals($v[1]['numero'], '2006-1231');
     }
         
     public function testDecretLoi() 
@@ -47,7 +46,7 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             décret-loi du 24 mai 1938
         ');
 
-        $this->assertEquals($v['date'][0], '24 mai 1938');
+        $this->assertEquals($v[0]['date'], '24 mai 1938');
     }
         
     public function testOrdonnance() 
@@ -57,8 +56,8 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             ordonnance du 7 novembre 1958
         ');
 
-        $this->assertEquals($v['numero'][0], '58-1067');
-        $this->assertEquals($v['date'][1], '7 novembre 1958');
+        $this->assertEquals($v[0]['numero'], '58-1067');
+        $this->assertEquals($v[1]['date'], '7 novembre 1958');
     }
         
     public function testAvis() 
@@ -70,7 +69,7 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
         ');
 // ldd($v);
         $this->assertEquals($v['institution'][0], 'Assemblée territoriale de la Polynésie française');
-        $this->assertEquals($v['date'][0], '25 novembre 1993');
+        $this->assertEquals($v[0]['date'], '25 novembre 1993');
         $this->assertEquals($v['institution'][1], 'Commission nationale de l\'informatique et des libertés');
         $this->assertEquals($v['institution'][2], 'Président de l\'Assemblée nationale');
     }
@@ -82,9 +81,9 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             l\'arrêté interministériel n° 1802 du 29 juin 1979
         ');
 
-        $this->assertEquals($v['date'][0], '12 février 2010');
-        $this->assertEquals($v['date'][1], '29 juin 1979');
-        $this->assertEquals($v['numero'][1], '1802');
+        $this->assertEquals($v[0]['date'], '12 février 2010');
+        $this->assertEquals($v[1]['date'], '29 juin 1979');
+        $this->assertEquals($v[1]['numero'], '1802');
         $this->assertEquals($v['type'][1], 'interministériel');
     }
 
@@ -98,9 +97,9 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($v['ville'][0], 'Lyon');
         $this->assertEquals($v['ville'][1], 'Lyon');
-        $this->assertEquals($v['date'][1], '14 décembre 1994');
+        $this->assertEquals($v[1]['date'], '14 décembre 1994');
         $this->assertEquals($v['ville'][2], 'Saint-Denis-de-la-Réunion');
-        $this->assertEquals($v['date'][2], '14 décembre 1994');
+        $this->assertEquals($v[2]['date'], '14 décembre 1994');
         $this->assertEquals($v['matiere'][2], 'civile');
     }
         
@@ -114,10 +113,10 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($v['tribunal'][0], 'grande instance d\'Argentan');
         $this->assertEquals($v['tribunal'][1], 'commerce');
-        $this->assertEquals($v['date'][1], '7 novembre 1995');
+        $this->assertEquals($v[1]['date'], '7 novembre 1995');
         $this->assertEquals($v['tribunal'][0], 'grande instance d\'Argentan');
         $this->assertEquals($v['matiere'][2], 'correctionnelle');
-        $this->assertEquals($v['date'][2], '7 novembre 1995');
+        $this->assertEquals($v[2]['date'], '7 novembre 1995');
     }
         
     public function testArretCourCassation() 
@@ -127,9 +126,9 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             l\'arrêt de la Cour de cassation (chambre criminelle) du 30 novembre 2005
         ');
 
-        $this->assertEquals($v['date'][0], '7 décembre 1995');
-        $this->assertEquals($v['date'][1], '30 novembre 2005');
-        $this->assertEquals($v['chambre'][1], 'criminelle');
+        $this->assertEquals($v[0]['date'], '7 décembre 1995');
+        $this->assertEquals($v[1]['date'], '30 novembre 2005');
+        $this->assertEquals($v[1]['chambre'], 'criminelle');
     }
         
     public function testArretCourJusticeUe() 
@@ -139,9 +138,9 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             arrêt de la Cour de justice de l\'Union européenne n° T-175/04 PPU
         ');
 
-        $this->assertEquals($v['date'][0], '30 mai 2013');
-        $this->assertEquals($v['numero'][0], 'C-168/13 PPU');
-        $this->assertEquals($v['numero'][1], 'T-175/04 PPU');
+        $this->assertEquals($v[0]['date'], '30 mai 2013');
+        $this->assertEquals($v[0]['numero'], 'C-168/13 PPU');
+        $this->assertEquals($v[1]['numero'], 'T-175/04 PPU');
     }
         
     public function testCirculaire() 
@@ -152,7 +151,7 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
         ');
 
         $this->assertEquals($v['institution'][0], 'ministre de l\'intérieur et de la sécurité publique');
-        $this->assertEquals($v['date'][0], '26 janvier 1993');
+        $this->assertEquals($v[0]['date'], '26 janvier 1993');
         $this->assertEquals($v['institution'][1], 'ministre de l\'intérieur');
     }
         
@@ -163,8 +162,8 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             la directive 23/54/CE 
         ');
 
-        $this->assertEquals($v['numero'][0], '2003/54/CE');
-        $this->assertEquals($v['numero'][1], '23/54/CE');
+        $this->assertEquals($v[0]['numero'], '2003/54/CE');
+        $this->assertEquals($v[1]['numero'], '23/54/CE');
     }
     
     public function testDecisionClassiqueCe() 
@@ -174,8 +173,8 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             la décision du Conseil d\'État nos 265582 et 273093 du 13 mars 2006
         ');
 
-        $this->assertEquals($v['numero'][0], '222160');
-        $this->assertEquals($v['date'][0], '30 juin 2003');
+        $this->assertEquals($v[0]['numero'], '222160');
+        $this->assertEquals($v[0]['date'], '30 juin 2003');
     }
         
     public function testDecisionRenvoiCe() 
@@ -185,7 +184,7 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             par le Conseil d\'Etat Conseil d\'État (décision nos 380743, 380744 et 380745 du 23 juillet 2014) 
         ');
 
-        $this->assertEquals($v['numero'][0], '387472');
+        $this->assertEquals($v[0]['numero'], '387472');
     }
         
     public function testConstitution() 
@@ -217,7 +216,7 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             décision-cadre n° 2002/584/JAI
         ');
 
-        $this->assertEquals($v['numero'][0], '2002/584/JAI');
+        $this->assertEquals($v[0]['numero'], '2002/584/JAI');
     }
         
     public function testDecisionCc() 
@@ -227,8 +226,8 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             la décision du Conseil constitutionnel n° 2009-577 DC du 3 mars 2009
         ');
 
-        $this->assertEquals($v['numero'][0], '2013-4793 AN');
-        $this->assertEquals($v['numero'][1], '2009-577 DC');
+        $this->assertEquals($v[0]['numero'], '2013-4793 AN');
+        $this->assertEquals($v[1]['numero'], '2009-577 DC');
     }
         
     public function testDeliberationCc() 
@@ -238,8 +237,8 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             délibération du Conseil constitutionnel du 23 octobre 1984 
         ');
 
-        $this->assertEquals($v['date'][0], '23 octobre 1987');
-        $this->assertEquals($v['date'][1], '23 octobre 1984');
+        $this->assertEquals($v[0]['date'], '23 octobre 1987');
+        $this->assertEquals($v[1]['date'], '23 octobre 1984');
     }
         
     public function testReglementCeOuUe() 
@@ -249,10 +248,10 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             le règlement (CE) n° 1466/97 
         ');
 
-        $this->assertEquals($v['numero'][0], '1175/2011');
-        $this->assertEquals($v['institution'][0], 'UE');
-        $this->assertEquals($v['numero'][1], '1466/97');
-        $this->assertEquals($v['institution'][1], 'CE');
+        $this->assertEquals($v[0]['numero'], '1175/2011');
+        $this->assertEquals($v[0]['institution'], 'UE');
+        $this->assertEquals($v[1]['numero'], '1466/97');
+        $this->assertEquals($v[1]['institution'], 'CE');
     }
         
     public function testReglementCc() 
@@ -262,8 +261,8 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             règlement du 3 février 2010 blalabla constitutionnalité 
         ');
 
-        $this->assertEquals($v['date'][0], '4 février 2010');
-        $this->assertEquals($v['date'][1], '3 février 2010');
+        $this->assertEquals($v[0]['date'], '4 février 2010');
+        $this->assertEquals($v[1]['date'], '3 février 2010');
     }
         
     public function testDecisionOuArretCedh()
@@ -274,7 +273,7 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             Dans sa décision ou dans son arrêt (date ou référence) la Cour européenne des droits de l`\'homme
         ');
 
-        $this->assertEquals($v['numero'][0], '4774/98');
-        $this->assertEquals($v['date'][1], '15 janvier 2009');
+        $this->assertEquals($v[0]['numero'], '4774/98');
+        $this->assertEquals($v[1]['date'], '15 janvier 2009');
     }
 }
