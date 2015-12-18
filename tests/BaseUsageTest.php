@@ -67,11 +67,11 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             l\'avis de la Commission nationale de l\'informatique et des libertés 
             avis du Président de l\'Assemblée nationale inséré au Journal officiel de la République française du 16 mars 2007
         ');
-// ldd($v);
-        $this->assertEquals($v['institution'][0], 'Assemblée territoriale de la Polynésie française');
+
+        $this->assertEquals($v[0]['institution'], 'Assemblée territoriale de la Polynésie française');
         $this->assertEquals($v[0]['date'], '25 novembre 1993');
-        $this->assertEquals($v['institution'][1], 'Commission nationale de l\'informatique et des libertés');
-        $this->assertEquals($v['institution'][2], 'Président de l\'Assemblée nationale');
+        $this->assertEquals($v[1]['institution'], 'Commission nationale de l\'informatique et des libertés');
+        $this->assertEquals($v[2]['institution'], 'Président de l\'Assemblée nationale');
     }
         
     public function testArrete() 
@@ -84,7 +84,7 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($v[0]['date'], '12 février 2010');
         $this->assertEquals($v[1]['date'], '29 juin 1979');
         $this->assertEquals($v[1]['numero'], '1802');
-        $this->assertEquals($v['type'][1], 'interministériel');
+        $this->assertEquals($v[1]['type'], 'interministériel');
     }
 
     public function testArretCa() 
@@ -95,12 +95,12 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             l\'arrêt de la cour d\'appel de Saint-Denis-de-la-Réunion, siégeant en matière civile, en date du 14 décembre 1994
         ');
 
-        $this->assertEquals($v['ville'][0], 'Lyon');
-        $this->assertEquals($v['ville'][1], 'Lyon');
+        $this->assertEquals($v[0]['ville'], 'Lyon');
+        $this->assertEquals($v[1]['ville'], 'Lyon');
         $this->assertEquals($v[1]['date'], '14 décembre 1994');
-        $this->assertEquals($v['ville'][2], 'Saint-Denis-de-la-Réunion');
+        $this->assertEquals($v[2]['ville'], 'Saint-Denis-de-la-Réunion');
         $this->assertEquals($v[2]['date'], '14 décembre 1994');
-        $this->assertEquals($v['matiere'][2], 'civile');
+        $this->assertEquals($v[2]['matiere'], 'civile');
     }
         
     public function testJugementTribunal() 
@@ -111,11 +111,10 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             le jugement du tribunal de grande instance d\'Argentan, siégeant en matière correctionnelle, en date du 7 novembre 1995
         ');
 
-        $this->assertEquals($v['tribunal'][0], 'grande instance d\'Argentan');
-        $this->assertEquals($v['tribunal'][1], 'commerce');
+        $this->assertEquals($v[0]['tribunal'], 'grande instance d\'Argentan');
+        $this->assertEquals($v[1]['tribunal'], 'commerce');
         $this->assertEquals($v[1]['date'], '7 novembre 1995');
-        $this->assertEquals($v['tribunal'][0], 'grande instance d\'Argentan');
-        $this->assertEquals($v['matiere'][2], 'correctionnelle');
+        $this->assertEquals($v[2]['matiere'], 'correctionnelle');
         $this->assertEquals($v[2]['date'], '7 novembre 1995');
     }
         
@@ -150,9 +149,9 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             la circulaire du ministre de l\'intérieur relative à l\'envoi des formulaires de présentation d\'un candidat à l\'élection présidentielle;
         ');
 
-        $this->assertEquals($v['institution'][0], 'ministre de l\'intérieur et de la sécurité publique');
+        $this->assertEquals($v[0]['institution'], 'ministre de l\'intérieur et de la sécurité publique');
         $this->assertEquals($v[0]['date'], '26 janvier 1993');
-        $this->assertEquals($v['institution'][1], 'ministre de l\'intérieur');
+        $this->assertEquals($v[1]['institution'], 'ministre de l\'intérieur');
     }
         
     public function testDirectiveUe() 
