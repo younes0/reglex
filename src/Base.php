@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 
 class Base
 {   
+    use CommonTrait;
+    
     public function __construct()
     {
         $this->builder = new RegExpBuilder();
@@ -29,7 +31,7 @@ class Base
                 ->then('n°')
             )
             ->maybe(' ')
-            ->append(Common::twoNumbers())
+            ->append($this->twoNumbers())
             ->asGroup('numero')
             ->optional($this->builder->getNew()
                 ->then(' du ')
@@ -51,7 +53,7 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->then('décret ')
-            ->append(Common::numero(Common::twoNumbers()))
+            ->append($this->numero($this->twoNumbers()))
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -61,7 +63,7 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->then('décret-loi du ')
-            ->append(Common::dateLettres())
+            ->append($this->dateLettres())
             ->asGroup('date')
             ->getRegExp();
 
@@ -72,8 +74,8 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->then('ordonnance ')
-            ->eitherFind(Common::numero(Common::twoNumbers()))
-            ->orFind(Common::duOuEndDateDu())
+            ->eitherFind($this->numero($this->twoNumbers()))
+            ->orFind($this->duOuEndDateDu())
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -87,7 +89,7 @@ class Base
             ->append($this->builder->anyOf(Utils::$institutions))
             ->asGroup('institution')
             ->maybe(' ')
-            ->optional(Common::duOuEndDateDu())
+            ->optional($this->duOuEndDateDu())
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -102,9 +104,9 @@ class Base
             )
             ->asGroup('type')
             ->maybe(' ')
-            ->optional(Common::numero(Common::oneNumber())) // ex: n° 1802 
+            ->optional($this->numero($this->oneNumber())) // ex: n° 1802 
             ->maybe(' ')
-            ->append(Common::duOuEndDateDu())
+            ->append($this->duOuEndDateDu())
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -121,7 +123,7 @@ class Base
                 ->then(',')
             )
             ->maybe(' ')
-            ->optional(Common::duOuEndDateDu());
+            ->optional($this->duOuEndDateDu());
 
         return $regExp->findIn($string);
     }
@@ -161,7 +163,7 @@ class Base
                 ->asGroup('chambre')
                 ->then(') ')
             )
-            ->append(Common::duOuEndDateDu())
+            ->append($this->duOuEndDateDu())
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -172,9 +174,9 @@ class Base
         $regExp = $this->defaultBuilder()
             ->then('arrêt de la cour de justice de l\'union européenne')
             ->maybe(' ')
-            ->optional(Common::duOuEndDateDu())
+            ->optional($this->duOuEndDateDu())
             ->maybe(', ')
-            ->append(Common::numero($this->builder->getNew()->anythingBut('PPU')))
+            ->append($this->numero($this->builder->getNew()->anythingBut('PPU')))
             ->getRegExp();
     
         return $regExp->findIn($string);
@@ -191,7 +193,7 @@ class Base
                 ->anythingBut('du ')
                 ->asGroup('institution1')
                 ->then(' ')
-                ->append(Common::duOuEndDateDu())
+                ->append($this->duOuEndDateDu())
             )
             // ex: ministre de l\'intérieur relative à sujet
             ->orFind($this->builder->getNew()
@@ -220,31 +222,31 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->then('directive ')
-            ->append(Common::twoNumbers('/')->then('/CE'))->asGroup('numero')
+            ->append($this->twoNumbers('/')->then('/CE'))->asGroup('numero')
             ->getRegExp();
 
         return $regExp->findIn($string);
     }
 
-    // later: multiple numéros (ex: eitherFind(Common::numeros))
+    // later: multiple numéros (ex: eitherFind($this->numeros))
     public function decisionClassiqueCe($string)
     {
         $regExp = $this->defaultBuilder()
             ->then('décision du Conseil d\'État ')
-            ->append(Common::numero(Common::oneNumber()))
+            ->append($this->numero($this->oneNumber()))
             ->maybe(' ')
-            ->optional(Common::duOuEndDateDu())
+            ->optional($this->duOuEndDateDu())
             ->getRegExp();
 
         return $regExp->findIn($string);
     }
 
-    // later: multiple numéros (ex: eitherFind(Common::numeros))
+    // later: multiple numéros (ex: eitherFind($this->numeros))
     public function decisionRenvoiCe($string)
     {
         $regExp = $this->defaultBuilder()
             ->then('Conseil d\'Etat (décision ')
-            ->append(Common::numero(Common::oneNumber()))
+            ->append($this->numero($this->oneNumber()))
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -252,19 +254,19 @@ class Base
 
     public function constitution($string)
     {
-        return Common::countStrings(Utils::$constitutions, $string);
+        return $this->countStrings(Utils::$constitutions, $string);
     }
 
     public function convention($string)
     {
-        return Common::countStrings(Utils::$conventions, $string);
+        return $this->countStrings(Utils::$conventions, $string);
     }
 
     public function decisionCadreUe($string)
     {
         $regExp = $this->defaultBuilder()
             ->then('décision-cadre ')
-            ->append(Common::numero(Common::twoNumbers('/')->then('/JAI')))
+            ->append($this->numero($this->twoNumbers('/')->then('/JAI')))
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -272,9 +274,13 @@ class Base
 
     public function decisionCc($string)
     {
+        $string = str_replace(' et autres', null, $string);
+        $string = str_replace(' à ', '/', $string);
+
         $regExp = $this->defaultBuilder()
-            ->append(Common::numero(
-                Common::twoNumbers()
+            ->append($this->numero(
+                $this->twoNumbers()
+                ->anythingBut(' ')
                 ->then(' ')
                 ->anyOf(Utils::$typeDecisionsConstitutionnelles)
             ))
@@ -287,7 +293,7 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->then('délibération du Conseil constitutionnel ')
-            ->append(Common::duOuEndDateDu())
+            ->append($this->duOuEndDateDu())
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -300,7 +306,7 @@ class Base
             ->append($this->builder->getNew()->anyOf(['UE', 'CE']))
             ->asGroup('institution')
             ->then(') ')
-            ->append(Common::numero(Common::twoNumbers('/')))
+            ->append($this->numero($this->twoNumbers('/')))
             ->getRegExp();
 
         return $regExp->findIn($string);
@@ -310,7 +316,7 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->then('règlement ')
-            ->append(Common::duOuEndDateDu())
+            ->append($this->duOuEndDateDu())
             ->anythingBut('constitutionnalité')
             ->getRegExp();
 
@@ -322,8 +328,8 @@ class Base
         $regExp = $this->defaultBuilder()
             ->anyOf(['arrêt', 'décision'])
             ->then(' de la Cour européenne des droits de l\'homme ')
-            ->eitherFind(Common::numero(Common::twoNumbers('/')))
-            ->orFind(Common::duOuEndDateDu())
+            ->eitherFind($this->numero($this->twoNumbers('/')))
+            ->orFind($this->duOuEndDateDu())
             ->getRegExp();
 
         return $regExp->findIn($string);

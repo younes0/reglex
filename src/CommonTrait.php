@@ -4,11 +4,11 @@ namespace Younes0\Reglex;
 
 use Gherkins\RegExpBuilderPHP\RegExpBuilder;
 
-class Common
+trait CommonTrait
 {   
     // later: ajouter mois
     // ex: 24 mai 1938
-    static public function dateLettres()
+    protected function dateLettres()
     {
         return (new RegExpBuilder)
             ->min(1)->max(2)->digits()
@@ -19,7 +19,7 @@ class Common
     }
 
     // ex: [du|en date du] 7 novembre 1958  
-    static public function duOuEndDateDu($name = 'date')
+    protected function duOuEndDateDu($name = 'date')
     {
         return (new RegExpBuilder)
             ->anyOf(['en date du', 'du'])
@@ -28,21 +28,21 @@ class Common
             ->asGroup($name);
     }
 
-    static public function oneNumber()
+    protected function oneNumber()
     {
         return (new RegExpBuilder)->min(1)->digits();
     }
     
     // ex: 123-1234
-    static public function twoNumbers($separator = '-')
+    protected function twoNumbers($separator = '-')
     {   
         return (new RegExpBuilder)
-            ->min(1)->digits()
+            ->min(0)->digits()
             ->then($separator)
-            ->min(1)->digits();
+            ->min(0)->digits();
     }
 
-    static public function numero(RegExpBuilder $regExp, $name = 'numero')
+    protected function numero(RegExpBuilder $regExp, $name = 'numero')
     {  
         return (new RegExpBuilder)->getNew()
             ->then('n°')
@@ -51,7 +51,7 @@ class Common
             ->asGroup($name);
     }
 
-    static public function countStrings($array, $string)
+    protected function countStrings($array, $string)
     {
         $found = [];
 

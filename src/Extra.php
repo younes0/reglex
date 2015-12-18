@@ -6,6 +6,8 @@ use Gherkins\RegExpBuilderPHP\RegExpBuilder;
 
 class Extra
 {   
+    use CommonTrait;
+    
     public function __construct()
     {
         $this->builder = new RegExpBuilder();
