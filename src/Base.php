@@ -23,10 +23,10 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->eitherFind($this->builder->getNew() // ex: L. 
-                ->anyOf(['L.', 'LO.'])
+                ->anyOf(['L. ', 'LO. '])
             )
             ->orFind($this->builder->getNew() // ex: loi organique du n°
-                ->anyOf(['loi', 'loi organique'])
+                ->anyOf(['loi ', 'loi organique '])
                 ->something()
                 ->then('n°')
             )
