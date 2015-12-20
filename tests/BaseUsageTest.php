@@ -194,8 +194,8 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             préambule du 27 octobre 1946
         ');
 
-        $this->assertEquals($v['constitution 1958'], 2);
-        $this->assertEquals($v['préambule 1946'], 1);
+        $this->assertEquals($v[0]['id'], 'constitution 1958');
+        $this->assertEquals($v[2]['id'], 'préambule 1946');
     }
 
     public function testConvention() 
@@ -205,8 +205,8 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             La Convention de sauvegarde des droits de l\'homme et des libertés fondamentales, signée à Rome le 4 novembre 1950
         ');
 
-        $this->assertEquals($v['convention genève 1951'], 1);
-        $this->assertEquals($v['convention rome 1950'], 1);
+        $this->assertEquals($v[0]['id'], 'convention genève 1951');
+        $this->assertEquals($v[1]['id'], 'convention rome 1950');
     }
         
     public function testDecisionCadreUe()    

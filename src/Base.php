@@ -46,7 +46,7 @@ class Base
             $results['organique'][$key] = Str::contains($value, ['loi organique', 'LO.']);
         }
 
-        return $this->reformat($results);
+        return $this->reformat($results, ['numero', 'code']);
     }
 
     public function decret($string)
@@ -55,7 +55,6 @@ class Base
             ->then('décret ')
             ->append($this->numero($this->twoNumbers()))
             ->getRegExp();
-
 
         return $this->reformat($regExp->findIn($string));
     }
@@ -68,7 +67,7 @@ class Base
             ->asGroup('date')
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['date']);
     }
 
     public function ordonnance($string)
@@ -79,7 +78,7 @@ class Base
             ->orFind($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['numero', 'date']);
     }
 
     public function avis($string)
@@ -93,7 +92,7 @@ class Base
             ->optional($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['institution', 'date']);
     }
 
     public function arrete($string)
@@ -110,7 +109,7 @@ class Base
             ->append($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['type', 'numero', 'date']);
     }
     
     protected function arretCaEtJugementTribunalFin()
@@ -138,7 +137,7 @@ class Base
             ->append($this->arretCaEtJugementTribunalFin())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['ville', 'date']);
     }
 
     // later: array liste tribunaux
@@ -151,7 +150,7 @@ class Base
             ->append($this->arretCaEtJugementTribunalFin())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['tribunal', 'date']);
     }
 
     public function arretCourCassation($string)
@@ -167,7 +166,7 @@ class Base
             ->append($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['date']);
     }
 
     public function arretCourJusticeUe($string)
@@ -216,7 +215,7 @@ class Base
         );
         unset($output['institution1'], $output['institution2']);
 
-        return $this->reformat($output);
+        return $this->reformat($output, ['institution', 'date']);
     }
 
     public function directiveUe($string)
@@ -297,7 +296,7 @@ class Base
             ->append($this->duOuEndDateDu())
             ->getRegExp();
             
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['date']);
     }
 
     public function reglementCeOuUe($string)
@@ -321,7 +320,7 @@ class Base
             ->anythingBut('constitutionnalité')
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['date']);
     }
 
     public function decisionOuArretCedh($string)
@@ -333,6 +332,6 @@ class Base
             ->orFind($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['numero', 'date']);
     }
 }
