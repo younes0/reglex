@@ -6,6 +6,83 @@ use Gherkins\RegExpBuilderPHP\RegExpBuilder;
 
 trait CommonTrait
 {   
+    protected function getBuilder()
+    {
+        return (new RegExpBuilder())->getNew()->pregMatchFlags(256);
+    }
+
+    protected function defaultBuilder()
+    {
+        return $this->getBuilder()
+            ->ignoreCase()
+            ->globalMatch()
+            ->pregMatchFlags(256);
+    }
+
+    protected function countStrings($array, $text)
+    {
+        $found = [];
+
+        foreach ($array as $id => $strings) {
+            foreach ($strings as $string) {
+                
+                $count = $this->substriCount($text, $string);
+
+                for ($i=0; $i < $count; $i++) { 
+                    $found[] = [
+                        'id'  => $id,
+                        'raw' => $string,
+                    ];
+                }
+            }
+        }
+
+        return $found;
+    }
+
+    protected function substriCount($haystack, $needle)
+    {
+        return substr_count(strtoupper($haystack), strtoupper($needle));
+    }
+
+    protected function reformat($array, $idKeys = ['numero'])
+    {
+        $output = [];
+
+        foreach ($array as $originalKey => $values) {
+
+            if (is_int($originalKey) and $originalKey !== 0) continue;
+
+            foreach ($values as $parentKey => $value) {
+                if ($value === '') $value = null; // convert to null
+
+                if ($originalKey === 0) {
+                    $output[$parentKey]['raw']       = $value[0];
+                    $output[$parentKey]['raw_start'] = $value[1];
+                    $output[$parentKey]['raw_end']   = $value[1] + strlen($value[0]);
+      
+                } else {
+                    $output[$parentKey][$originalKey] = $value[0];
+                }
+            }
+        }
+
+        // add id keys
+        foreach ($output as $parentKey => $value) {
+            $id = null;
+
+            foreach ($idKeys as $key) {
+                if (isset($value[$key])) {
+                    $id.= $value[$key].' '; 
+                }   
+            }
+
+            $output[$parentKey]['id'] = trim($id);
+        }
+
+        return $output;
+    }
+    
     // later: ajouter mois
     // ex: 24 mai 1938
     protected function dateLettres()
@@ -49,63 +126,5 @@ trait CommonTrait
             ->maybe(' ')
             ->append($regExp)
             ->asGroup($name);
-    }
-
-    protected function countStrings($array, $text)
-    {
-        $found = [];
-
-        foreach ($array as $id => $strings) {
-            foreach ($strings as $string) {
-                
-                $count = $this->substriCount($text, $string);
-
-                for ($i=0; $i < $count; $i++) { 
-                    $found[] = [
-                        'id'  => $id,
-                        'raw' => $string,
-                    ];
-                }
-            }
-        }
-
-        return $found;
-    }
-
-    protected function substriCount($haystack, $needle)
-    {
-        return substr_count(strtoupper($haystack), strtoupper($needle));
-    }
-
-    protected function reformat($array, $idKeys = ['numero'])
-    {
-        $output = [];
-
-        foreach ($array as $originalKey => $values) {
-            if (is_int($originalKey) and $originalKey !== 0) continue;
-
-            foreach ($values as $parentKey => $value) {
-                
-                if ($value === '') $value = null; // convert to null
-
-                $key = ($originalKey === 0) ? 'raw' : $originalKey;
-                $output[$parentKey][$key] = $value;
-            }
-        }
-
-        // add id keys
-        foreach ($output as $parentKey => $value) {
-            $id = null;
-
-            foreach ($idKeys as $key) {
-                if (isset($value[$key])) {
-                    $id.= $value[$key].' '; 
-                }   
-            }
-
-            $output[$parentKey]['id'] = trim($id);
-        }
-
-        return $output;
     }
 }

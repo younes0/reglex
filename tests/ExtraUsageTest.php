@@ -24,8 +24,8 @@ class ExtraUsageTest extends \PHPUnit_Framework_TestCase
 
         $v = $this->extra->dccVisa($string1.PHP_EOL.$string2);
 
-        $this->assertEquals($v[0], $string1);
-        $this->assertEquals($v[1], $string2);
+        $this->assertEquals($v[0]['raw'], $string1);
+        $this->assertEquals($v[1]['raw'], $string2);
     }
     
     public function testDccConsiderant()    
@@ -34,20 +34,20 @@ class ExtraUsageTest extends \PHPUnit_Framework_TestCase
         $string2 = '30. Considérant que blabla ;';
 
         $v = $this->extra->dccConsiderant($string1.PHP_EOL.$string2);
-
-        $this->assertEquals($v[0], $string1);
-        $this->assertEquals($v[1], $string2);
+        
+        $this->assertEquals($v[0]['raw'], $string1);
+        $this->assertEquals($v[1]['raw'], $string2);
     }
     
     public function testDccOuCommentaireDccPremierParagraphe()
     {
         $string1 = 'Le Conseil constitutionnel a été saisi le 28 janvier 2015, par le Premier ministre, dans les conditions prévues par le second alinéa de l\'article 37 de la Constitution, d\'une demande tendant à ce qu\'il se prononce sur la nature juridique du nombre « cinq » figurant au troisième alinéa de l\'article L. 758-1 du code de l\'éducation.';
 
-        $string2 = PHP_EOL.'LE CONSEIL CONSTITUTIONNEL, '.PHP_EOL.$string1;
+        $stringAll = PHP_EOL.'LE CONSEIL CONSTITUTIONNEL, '.PHP_EOL.$string1;
 
-        $v = $this->extra->dccOuCommentaireDccPremierParagraphe($string1.$string2);
+        $v = $this->extra->dccOuCommentaireDccPremierParagraphe($stringAll);
 
-        $this->assertEquals($v[0], $string1);
+        $this->assertEquals($v[0]['raw'], $string1);
         $this->assertEquals(count($v), 1);
     }
     

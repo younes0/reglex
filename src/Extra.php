@@ -8,33 +8,27 @@ class Extra
 {   
     use CommonTrait;
     
-    public function __construct()
-    {
-        $this->builder = new RegExpBuilder();
-    }
-
-    protected function defaultBuilder()
-    {
-        return $this->builder->getNew()->ignoreCase()->globalMatch();
-    }
-
     protected function dccVisaOuConsiderant(RegExpBuilder $start, $string)
     {
         $regExp = $this->defaultBuilder()
             ->multiLine()
-            ->startOfLine()
-            ->append($start)
-            ->anything()
-            ->then(';')
+            ->append($this->defaultBuilder()
+                ->startOfLine()
+                ->append($start)
+                ->anything()
+                ->then(';')
+            )
+            ->asGroup('raw')
+            ->endOfLine()
             ->getRegExp();
-        
-        return $regExp->findIn($string);
+
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function dccVisa($string)
     {
         return $this->dccVisaOuConsiderant(
-            $this->builder->getNew()->then('Vu '),
+            $this->getBuilder()->then('Vu '),
             $string
         );
     }
@@ -42,25 +36,30 @@ class Extra
     public function dccConsiderant($string)
     {
         return $this->dccVisaOuConsiderant(
-            $this->builder->getNew()->min(1)->digits()->then('. Considérant '),
+            $this->getBuilder()->min(1)->digits()->then('. Considérant '),
             $string
         );
     }
 
     public function dccOuCommentaireDccPremierParagraphe($string)
     {
-        $regExp = $this->builder->getNew()->ignoreCase()
-            ->startOfLine()->then('Le Conseil constitutionnel a été saisi')
-            ->anything()
-            ->then('.')->endOfLine()
+        $regExp = $this->defaultBuilder()
+            ->append($this->defaultBuilder()
+                ->startOfLine()
+                ->then('Le Conseil constitutionnel a été saisi')
+                ->anything()
+                ->then('.')
+            )
+            ->asGroup('raw')
+            ->endOfLine()
             ->getRegExp();
-        
-        return $regExp->findIn($string);
+
+        return $this->reformat($regExp->findIn($string));
     }
 
     public function dccMembres($string)
     {
-        $regExp = $this->builder->getNew()->ignoreCase()
+        $regExp = $this->getBuilder()->ignoreCase()
             ->then('où siégeaient :')
             ->anything()
             ->asGroup('membres')
@@ -73,7 +72,7 @@ class Extra
             return null;
         }
 
-        $string  = $result['membres'];
+        $string  = $result['membres'][0];
         $string  = str_replace([' et ', 'Président,', '.'], ' ', $string);
         $membres = explode(',', $string);
         
@@ -97,7 +96,7 @@ class Extra
             ->lineBreak()
             ->startOfLine()
             ->maybe('Voir ')
-            ->optional($this->builder->getNew()
+            ->optional($this->getBuilder()
                 ->anyOf(Utils::$titresCivilite)
                 ->maybe('.')
                 ->then(' ')
@@ -109,6 +108,6 @@ class Extra
             ->endOfLine()
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($string), ['auteur']);
     }
 }

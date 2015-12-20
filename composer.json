@@ -15,7 +15,7 @@
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "^5.1",
-        "gherkins/regexpbuilderphp": "dev-patch-1"
+        "gherkins/regexpbuilderphp": "dev-patched"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",

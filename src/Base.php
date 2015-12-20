@@ -9,23 +9,13 @@ class Base
 {   
     use CommonTrait;
 
-    public function __construct()
-    {
-        $this->builder = new RegExpBuilder();
-    }
-
-    protected function defaultBuilder()
-    {
-        return $this->builder->getNew()->ignoreCase()->globalMatch();
-    }
-
     public function loi($string)
     {
         $regExp = $this->defaultBuilder()
-            ->eitherFind($this->builder->getNew() // ex: L. 
+            ->eitherFind($this->getBuilder() // ex: L. 
                 ->anyOf(['L. ', 'LO. '])
             )
-            ->orFind($this->builder->getNew() // ex: loi organique du n°
+            ->orFind($this->getBuilder() // ex: loi organique du n°
                 ->anyOf(['loi ', 'loi organique '])
                 ->something()
                 ->then('n°')
@@ -33,9 +23,9 @@ class Base
             ->maybe(' ')
             ->append($this->twoNumbers())
             ->asGroup('numero')
-            ->optional($this->builder->getNew()
+            ->optional($this->getBuilder()
                 ->then(' du ')
-                ->append($this->builder->getNew()->anyOf(Utils::$codesFr))
+                ->append($this->getBuilder()->anyOf(Utils::$codesFr))
                 ->asGroup('code')
             )
             ->getRegExp();
@@ -43,7 +33,7 @@ class Base
         $results = $regExp->findIn($string);
 
         foreach ($results[0] as $key => $value) {
-            $results['organique'][$key] = Str::contains($value, ['loi organique', 'LO.']);
+            $results['organique'][$key][0] = Str::contains($value[0], ['loi organique', 'LO.']);
         }
 
         return $this->reformat($results, ['numero', 'code']);
@@ -86,7 +76,7 @@ class Base
         $regExp = $this->defaultBuilder()
             ->then('avis')
             ->something()
-            ->append($this->builder->anyOf(Utils::$institutions))
+            ->append($this->getBuilder()->anyOf(Utils::$institutions))
             ->asGroup('institution')
             ->maybe(' ')
             ->optional($this->duOuEndDateDu())
@@ -99,7 +89,7 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->then('arrêté ')
-            ->optional($this->builder->getNew()
+            ->optional($this->getBuilder()
                 ->anyOf(['préfectoral', 'ministériel', 'municipal', 'interministériel'])
             )
             ->asGroup('type')
@@ -114,9 +104,9 @@ class Base
     
     protected function arretCaEtJugementTribunalFin()
     {
-        return $this->builder->getNew()
+        return $this->getBuilder()
             ->maybe(', ')
-            ->optional($this->builder->getNew()
+            ->optional($this->getBuilder()
                 ->then('siégeant en matière ')
                 ->something()
                 ->asGroup('matiere')
@@ -157,7 +147,7 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->then('arrêt de la Cour de cassation ')
-            ->optional($this->builder->getNew()
+            ->optional($this->getBuilder()
                 ->then('(chambre ')
                 ->something()
                 ->asGroup('chambre')
@@ -176,7 +166,7 @@ class Base
             ->maybe(' ')
             ->optional($this->duOuEndDateDu())
             ->maybe(', ')
-            ->append($this->numero($this->builder->getNew()->anythingBut('PPU')))
+            ->append($this->numero($this->getBuilder()->anythingBut('PPU')))
             ->getRegExp();
     
         return $this->reformat($regExp->findIn($string));
@@ -189,14 +179,14 @@ class Base
             ->anyOf(['de', 'du'])
             ->then(' ')
             // ex: ministre de l'intérieur du 26 janvier 1993 relative à sujet
-            ->eitherFind($this->builder->getNew() // ex: L. 
+            ->eitherFind($this->getBuilder() // ex: L. 
                 ->anythingBut('du ')
                 ->asGroup('institution1')
                 ->then(' ')
                 ->append($this->duOuEndDateDu())
             )
             // ex: ministre de l\'intérieur relative à sujet
-            ->orFind($this->builder->getNew()
+            ->orFind($this->getBuilder()
                 ->anythingBut('relative ')
                 ->asGroup('institution2')
                 ->maybe(' ')
@@ -208,6 +198,14 @@ class Base
             ->getRegExp();
 
         $output = $regExp->findIn($string);
+
+        for ($i=1; $i <= 2; $i++) { 
+            foreach ($output['institution'.$i] as $key => $value) {
+                if ( !$value[0]) {
+                    unset($output['institution'.$i][$key]);
+                }
+            }
+        }
 
         $output['institution'] = array_merge(
             array_filter($output['institution1']),
@@ -303,7 +301,7 @@ class Base
     {
         $regExp = $this->defaultBuilder()
             ->then('règlement (')
-            ->append($this->builder->getNew()->anyOf(['UE', 'CE']))
+            ->append($this->getBuilder()->anyOf(['UE', 'CE']))
             ->asGroup('institution')
             ->then(') ')
             ->append($this->numero($this->twoNumbers('/')))

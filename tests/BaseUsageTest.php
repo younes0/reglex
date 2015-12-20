@@ -20,6 +20,7 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
             LO. 1-1 du code général de la propriété des personnes publiques; 
             loi organique n° 2-2;
         ');
+
         $this->assertEquals($v[0]['numero'], '2111-4');
         $this->assertEquals($v[1]['numero'], '1-1');
         $this->assertEquals($v[2]['numero'], '2-2');
