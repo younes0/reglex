@@ -8,16 +8,14 @@ trait CommonTrait
 {   
     protected function getBuilder()
     {
-        return (new RegExpBuilder())->getNew()
-            ->pregMatchFlags(PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+        return (new RegExpBuilder())->getNew()->pregMatchFlags(256);
     }
 
     protected function defaultBuilder()
     {
         return $this->getBuilder()
             ->ignoreCase()
-            ->globalMatch()
-            ->pregMatchFlags(256);
+            ->globalMatch();
     }
 
     protected function reformat($array, $idKeys = ['numero'])
@@ -32,9 +30,7 @@ trait CommonTrait
                 if ($value === '') $value = null; // convert to null
 
                 if ($originalKey === 0) {
-                    $output[$parentKey]['raw']       = $value[0];
-                    $output[$parentKey]['raw_start'] = $value[1];
-                    $output[$parentKey]['raw_end']   = $value[1] + strlen($value[0]);
+                    $output[$parentKey]['raw'] = $value[0];
       
                 } else {
                     $output[$parentKey][$originalKey] = $value[0];
@@ -53,7 +49,7 @@ trait CommonTrait
                 }   
             }
 
-            $output[$parentKey]['id'] = trim($id);
+            $output[$parentKey]['id']   = trim($id);
             $output[$parentKey]['type'] = $this->getType();
         }
 
@@ -66,7 +62,6 @@ trait CommonTrait
 
         foreach ($array as $id => $strings) {
             foreach ($strings as $string) {
-
                 $start = 0;
 
                 while (($pos = stripos($text, $string, $start)) !== false) {
@@ -74,11 +69,9 @@ trait CommonTrait
                     $start = $pos + strlen($string);
 
                     $found[] = [
-                        'id'        => $id,
-                        'raw'       => $string,
-                        'raw_start' => $pos,
-                        'raw_end'   => $start,
-                        'type'      => $this->getType(),
+                        'id'   => $id,
+                        'raw'  => $string,
+                        'type' => $this->getType(),
                     ];
                 }
             }

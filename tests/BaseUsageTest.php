@@ -85,7 +85,7 @@ class BaseUsageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($v[0]['date'], '12 février 2010');
         $this->assertEquals($v[1]['date'], '29 juin 1979');
         $this->assertEquals($v[1]['numero'], '1802');
-        $this->assertEquals($v[1]['type'], 'interministériel');
+        $this->assertEquals($v[1]['source'], 'interministériel');
     }
 
     public function testArretCa() 

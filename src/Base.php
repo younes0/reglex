@@ -16,8 +16,8 @@ class Base
                 ->anyOf(['L. ', 'LO. '])
             )
             ->orFind($this->getBuilder() // ex: loi organique du n°
-                ->anyOf(['loi ', 'loi organique '])
-                ->something()
+                ->anyOf(['loi', 'loi organique'])
+                ->anythingBut('n°')
                 ->then('n°')
             )
             ->maybe(' ')
@@ -92,14 +92,14 @@ class Base
             ->optional($this->getBuilder()
                 ->anyOf(['préfectoral', 'ministériel', 'municipal', 'interministériel'])
             )
-            ->asGroup('type')
+            ->asGroup('source')
             ->maybe(' ')
             ->optional($this->numero($this->oneNumber())) // ex: n° 1802 
             ->maybe(' ')
             ->append($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['type', 'numero', 'date']);
+        return $this->reformat($regExp->findIn($string), ['source', 'numero', 'date']);
     }
     
     protected function arretCaEtJugementTribunalFin()
@@ -282,6 +282,7 @@ class Base
                 ->then(' ')
                 ->anyOf(Utils::$typeDecisionsConstitutionnelles)
             ))
+            ->then(' ')
             ->getRegExp();
 
         return $this->reformat($regExp->findIn($string));
