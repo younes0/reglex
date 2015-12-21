@@ -19,32 +19,6 @@ trait CommonTrait
             ->pregMatchFlags(256);
     }
 
-    protected function countStrings($array, $text)
-    {
-        $found = [];
-
-        foreach ($array as $id => $strings) {
-            foreach ($strings as $string) {
-                
-                $count = $this->substriCount($text, $string);
-
-                for ($i=0; $i < $count; $i++) { 
-                    $found[] = [
-                        'id'  => $id,
-                        'raw' => $string,
-                    ];
-                }
-            }
-        }
-
-        return $found;
-    }
-
-    protected function substriCount($haystack, $needle)
-    {
-        return substr_count(strtoupper($haystack), strtoupper($needle));
-    }
-
     protected function reformat($array, $idKeys = ['numero'])
     {
         $output = [];
@@ -81,6 +55,32 @@ trait CommonTrait
         }
 
         return $output;
+    }
+    
+    protected function countStrings($array, $text)
+    {
+        $found = [];
+
+        foreach ($array as $id => $strings) {
+            foreach ($strings as $string) {
+
+                $start = 0;
+
+                while (($pos = stripos($text, $string, $start)) !== false) {
+ 
+                    $start = $pos + strlen($string);
+
+                    $found[] = [
+                        'id'        => $id,
+                        'raw'       => $string,
+                        'raw_start' => $pos,
+                        'raw_end'   => $start,
+                    ];
+                }
+            }
+        }
+
+        return $found;
     }
     
     // later: ajouter mois
