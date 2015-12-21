@@ -92,6 +92,9 @@ trait CommonTrait
         return debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['function'];
     }
 
+// RegEx Helpers
+// ------------------------------------------------------------------------------
+
     // later: ajouter mois
     // ex: 24 mai 1938
     protected function dateLettres()
