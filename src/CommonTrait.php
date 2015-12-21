@@ -8,7 +8,8 @@ trait CommonTrait
 {   
     protected function getBuilder()
     {
-        return (new RegExpBuilder())->getNew()->pregMatchFlags(256);
+        return (new RegExpBuilder())->getNew()
+            ->pregMatchFlags(PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
     }
 
     protected function defaultBuilder()
