@@ -40,6 +40,7 @@ trait CommonTrait
                     $output[$parentKey][$originalKey] = $value[0];
                 }
             }
+
         }
 
         // add id keys
@@ -53,6 +54,7 @@ trait CommonTrait
             }
 
             $output[$parentKey]['id'] = trim($id);
+            $output[$parentKey]['type'] = $this->getType();
         }
 
         return $output;
@@ -76,6 +78,7 @@ trait CommonTrait
                         'raw'       => $string,
                         'raw_start' => $pos,
                         'raw_end'   => $start,
+                        'type'      => $this->getType(),
                     ];
                 }
             }
@@ -84,6 +87,11 @@ trait CommonTrait
         return $found;
     }
     
+    private function getType()
+    {
+        return debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['function'];
+    }
+
     // later: ajouter mois
     // ex: 24 mai 1938
     protected function dateLettres()
