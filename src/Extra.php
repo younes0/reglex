@@ -4,11 +4,11 @@ namespace Younes0\Reglex;
 
 use Gherkins\RegExpBuilderPHP\RegExpBuilder;
 
-class Extra
+class Extra extends AbstractExtractor
 {   
-    use CommonTrait;
+    use HelpersTrait;
     
-    protected function dccVisaOuConsiderant(RegExpBuilder $start, $string)
+    protected function dccVisaOuConsiderant(RegExpBuilder $start)
     {
         $regExp = $this->defaultBuilder()
             ->append($this->defaultBuilder()
@@ -21,26 +21,24 @@ class Extra
             ->endOfLine()
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
-    public function dccVisa($string)
+    public function dccVisa()
     {
         return $this->dccVisaOuConsiderant(
-            $this->getBuilder()->then('Vu '),
-            $string
+            $this->getBuilder()->then('Vu ')
         );
     }
 
-    public function dccConsiderant($string)
+    public function dccConsiderant()
     {
         return $this->dccVisaOuConsiderant(
-            $this->getBuilder()->min(1)->digits()->then('. Considérant '),
-            $string
+            $this->getBuilder()->min(1)->digits()->then('. Considérant ')
         );
     }
 
-    public function dccOuCommentaireDccPremierParagraphe($string)
+    public function dccOuCommentaireDccPremierParagraphe()
     {
         $regExp = $this->defaultBuilder()
             ->append($this->defaultBuilder()
@@ -53,13 +51,13 @@ class Extra
             ->endOfLine()
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
-    public function dccMembres($string)
+    public function dccMembres()
     {
         // remove line breaks and extra white space
-        $string = str_replace(["\r", "\n"], ' ', $string);
+        $string = str_replace(["\r", "\n"], ' ', $this->string);
         $string = preg_replace('/\s+/', ' ', $string);
         $string = str_ireplace('M.', 'M', $string);
 
@@ -102,7 +100,7 @@ class Extra
         return $output;
     }
 
-    public function refDocAuteurs($string)
+    public function refDocAuteurs()
     {
         $regExp = $this->defaultBuilder()
             ->lineBreak()
@@ -120,6 +118,6 @@ class Extra
             ->endOfLine()
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['auteur']);
+        return $this->reformat($regExp->findIn($this->string), ['auteur']);
     }
 }

@@ -5,11 +5,11 @@ namespace Younes0\Reglex;
 use Gherkins\RegExpBuilderPHP\RegExpBuilder;
 use Illuminate\Support\Str;
 
-class Base
+class Basic extends AbstractExtractor
 {   
-    use CommonTrait;
+    use HelpersTrait;
 
-    public function loi($string)
+    public function loi()
     {
         $regExp = $this->defaultBuilder()
             ->anyOf(['L.', 'LO.', 'loi n°', 'loi organique n°'])
@@ -26,7 +26,7 @@ class Base
             )
             ->getRegExp();
         
-        $results = $regExp->findIn($string);
+        $results = $regExp->findIn($this->string);
 
         foreach ($results[0] as $key => $value) {
             $results['organique'][$key] = Str::contains($value, ['loi organique', 'LO.']);
@@ -35,17 +35,17 @@ class Base
         return $this->reformat($results, ['numero', 'code']);
     }
 
-    public function decret($string)
+    public function decret()
     {
         $regExp = $this->defaultBuilder()
             ->then('décret ')
             ->append($this->numero($this->twoNumbers()))
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
-    public function decretLoi($string)
+    public function decretLoi()
     {
         $regExp = $this->defaultBuilder()
             ->then('décret-loi du ')
@@ -53,10 +53,10 @@ class Base
             ->asGroup('date')
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['date']);
+        return $this->reformat($regExp->findIn($this->string), ['date']);
     }
 
-    public function ordonnance($string)
+    public function ordonnance()
     {
         $regExp = $this->defaultBuilder()
             ->then('ordonnance ')
@@ -64,10 +64,10 @@ class Base
             ->orFind($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['numero', 'date']);
+        return $this->reformat($regExp->findIn($this->string), ['numero', 'date']);
     }
 
-    public function avis($string)
+    public function avis()
     {
         $regExp = $this->defaultBuilder()
             ->then('avis')
@@ -78,10 +78,10 @@ class Base
             ->optional($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['institution', 'date']);
+        return $this->reformat($regExp->findIn($this->string), ['institution', 'date']);
     }
 
-    public function arrete($string)
+    public function arrete()
     {
         $regExp = $this->defaultBuilder()
             ->then('arrêté ')
@@ -95,7 +95,7 @@ class Base
             ->append($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['source', 'numero', 'date']);
+        return $this->reformat($regExp->findIn($this->string), ['source', 'numero', 'date']);
     }
     
     protected function arretCaEtJugementTribunalFin()
@@ -111,10 +111,10 @@ class Base
             ->maybe(' ')
             ->optional($this->duOuEndDateDu());
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
-    public function arretCa($string)
+    public function arretCa()
     {
         $regExp = $this->defaultBuilder()
             ->then('arrêt de la cour d\'appel de ')
@@ -123,11 +123,11 @@ class Base
             ->append($this->arretCaEtJugementTribunalFin())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['ville', 'date']);
+        return $this->reformat($regExp->findIn($this->string), ['ville', 'date']);
     }
 
     // later: array liste tribunaux
-    public function jugementTribunal($string)
+    public function jugementTribunal()
     {
         $regExp = $this->defaultBuilder()
             ->then('jugement du tribunal de ')
@@ -136,10 +136,10 @@ class Base
             ->append($this->arretCaEtJugementTribunalFin())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['tribunal', 'date']);
+        return $this->reformat($regExp->findIn($this->string), ['tribunal', 'date']);
     }
 
-    public function arretCourCassation($string)
+    public function arretCourCassation()
     {
         $regExp = $this->defaultBuilder()
             ->then('arrêt de la Cour de cassation ')
@@ -152,10 +152,10 @@ class Base
             ->append($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['date']);
+        return $this->reformat($regExp->findIn($this->string), ['date']);
     }
 
-    public function arretCourJusticeUe($string)
+    public function arretCourJusticeUe()
     {
         $regExp = $this->defaultBuilder()
             ->then('arrêt de la cour de justice de l\'union européenne')
@@ -165,10 +165,10 @@ class Base
             ->append($this->numero($this->getBuilder()->anythingBut('PPU')))
             ->getRegExp();
     
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
-    public function circulaire($string)
+    public function circulaire()
     {
         $regExp = $this->defaultBuilder()
             ->then('circulaire ')
@@ -193,7 +193,7 @@ class Base
             ->then(';')
             ->getRegExp();
 
-        $output = $regExp->findIn($string);
+        $output = $regExp->findIn($this->string);
 
         for ($i=1; $i <= 2; $i++) { 
             foreach ($output['institution'.$i] as $key => $value) {
@@ -212,18 +212,18 @@ class Base
         return $this->reformat($output, ['institution', 'date']);
     }
 
-    public function directiveUe($string)
+    public function directiveUe()
     {
         $regExp = $this->defaultBuilder()
             ->then('directive ')
             ->append($this->twoNumbers('/')->then('/CE'))->asGroup('numero')
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
     // later: multiple numéros (ex: eitherFind($this->numeros))
-    public function decisionClassiqueCe($string)
+    public function decisionClassiqueCe()
     {
         $regExp = $this->defaultBuilder()
             ->then('décision du Conseil d\'État ')
@@ -232,43 +232,43 @@ class Base
             ->optional($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
     // later: multiple numéros (ex: eitherFind($this->numeros))
-    public function decisionRenvoiCe($string)
+    public function decisionRenvoiCe()
     {
         $regExp = $this->defaultBuilder()
             ->then('Conseil d\'Etat (décision ')
             ->append($this->numero($this->oneNumber()))
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
-    public function constitution($string)
+    public function constitution()
     {
-        return $this->countStrings(Utils::$constitutions, $string);
+        return $this->countStrings(Utils::$constitutions, $this->string);
     }
 
-    public function convention($string)
+    public function convention()
     {
-        return $this->countStrings(Utils::$conventions, $string);
+        return $this->countStrings(Utils::$conventions, $this->string);
     }
 
-    public function decisionCadreUe($string)
+    public function decisionCadreUe()
     {
         $regExp = $this->defaultBuilder()
             ->then('décision-cadre ')
             ->append($this->numero($this->twoNumbers('/')->then('/JAI')))
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
-    public function decisionCc($string)
+    public function decisionCc()
     {
-        $string = str_replace(' et autres', null, $string);
+        $string = str_replace(' et autres', null, $this->string);
         $string = str_replace(' à ', '/', $string);
 
         $regExp = $this->defaultBuilder()
@@ -284,17 +284,17 @@ class Base
         return $this->reformat($regExp->findIn($string));
     }
 
-    public function deliberationCc($string)
+    public function deliberationCc()
     {
         $regExp = $this->defaultBuilder()
             ->then('délibération du Conseil constitutionnel ')
             ->append($this->duOuEndDateDu())
             ->getRegExp();
             
-        return $this->reformat($regExp->findIn($string), ['date']);
+        return $this->reformat($regExp->findIn($this->string), ['date']);
     }
 
-    public function reglementCeOuUe($string)
+    public function reglementCeOuUe()
     {
         $regExp = $this->defaultBuilder()
             ->then('règlement (')
@@ -304,10 +304,10 @@ class Base
             ->append($this->numero($this->twoNumbers('/')))
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string));
+        return $this->reformat($regExp->findIn($this->string));
     }
 
-    public function reglementCc($string)
+    public function reglementCc()
     {
         $regExp = $this->defaultBuilder()
             ->then('règlement ')
@@ -315,10 +315,10 @@ class Base
             ->anythingBut('constitutionnalité')
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['date']);
+        return $this->reformat($regExp->findIn($this->string), ['date']);
     }
 
-    public function decisionOuArretCedh($string)
+    public function decisionOuArretCedh()
     {
         $regExp = $this->defaultBuilder()
             ->anyOf(['arrêt', 'décision'])
@@ -327,6 +327,6 @@ class Base
             ->orFind($this->duOuEndDateDu())
             ->getRegExp();
 
-        return $this->reformat($regExp->findIn($string), ['numero', 'date']);
+        return $this->reformat($regExp->findIn($this->string), ['numero', 'date']);
     }
 }
