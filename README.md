@@ -1,6 +1,6 @@
 # Reglex
 
-Extracteur de normes juridiques depuis une chaîne de caractères
+Extracteur de normes juridiques situées dans un texte pour le droit français
 
 ## Introduction
 
