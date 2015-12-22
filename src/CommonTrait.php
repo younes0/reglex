@@ -8,12 +8,13 @@ trait CommonTrait
 {   
     protected function getBuilder()
     {
-        return (new RegExpBuilder())->getNew()->pregMatchFlags(256);
+        return (new RegExpBuilder())->getNew();
     }
 
     protected function defaultBuilder()
     {
         return $this->getBuilder()
+            ->multiLine()
             ->ignoreCase()
             ->globalMatch();
     }
@@ -30,10 +31,10 @@ trait CommonTrait
                 if ($value === '') $value = null; // convert to null
 
                 if ($originalKey === 0) {
-                    $output[$parentKey]['raw'] = $value[0];
+                    $output[$parentKey]['raw'] = $value;
       
                 } else {
-                    $output[$parentKey][$originalKey] = $value[0];
+                    $output[$parentKey][$originalKey] = $value;
                 }
             }
 

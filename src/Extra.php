@@ -11,7 +11,6 @@ class Extra
     protected function dccVisaOuConsiderant(RegExpBuilder $start, $string)
     {
         $regExp = $this->defaultBuilder()
-            ->multiLine()
             ->append($this->defaultBuilder()
                 ->startOfLine()
                 ->append($start)
@@ -59,21 +58,26 @@ class Extra
 
     public function dccMembres($string)
     {
-        $regExp = $this->getBuilder()->ignoreCase()
+        // remove line breaks and extra white space
+        $string = str_replace(["\r", "\n"], ' ', $string);
+        $string = preg_replace('/\s+/', ' ', $string);
+        $string = str_ireplace('M.', 'M', $string);
+
+        $regExp = $this->defaultBuilder()
             ->then('où siégeaient :')
-            ->anything()
+            ->anythingBut('.')
             ->asGroup('membres')
-            ->then('.')
             ->getRegExp();
 
         $result = $regExp->findIn($string);
 
-        if ( !isset($result['membres'])) {
+        if ( !isset($result['membres'][0])) {
             return null;
         }
 
         $string  = $result['membres'][0];
-        $string  = str_replace([' et ', 'Président,', '.'], ' ', $string);
+        $string  = str_ireplace(' et ', ',', $string);
+        $string  = str_ireplace(['Président,', '.'], ' ', $string);
         $membres = explode(',', $string);
         
         $toReplace = array_map(function($value) { 
@@ -86,13 +90,21 @@ class Extra
         
         sort($membres);
 
-        return array_filter($membres);
+        $output = [];
+        foreach (array_filter($membres) as $membre) {
+            $output[] = [
+                'type' => 'membre',
+                'id'   => $membre,
+                'raw'  => $membre,
+            ];
+        };
+
+        return $output;
     }
 
     public function refDocAuteurs($string)
     {
         $regExp = $this->defaultBuilder()
-            ->multiLine()
             ->lineBreak()
             ->startOfLine()
             ->maybe('Voir ')

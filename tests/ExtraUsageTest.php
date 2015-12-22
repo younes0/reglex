@@ -55,14 +55,12 @@ class ExtraUsageTest extends \PHPUnit_Framework_TestCase
     {
         $v = $this->extra->dccMembres('Délibéré par le Conseil constitutionnel dans sa séance du 23 juillet 2015, où siégeaient : M. Jean-Louis DEBRÉ, Président, Mmes Claire BAZY MALAURIE, Nicole BELLOUBET, MM. Guy CANIVET, Michel CHARASSE, et Mme Nicole MAESTRACCI.');
 
-        $this->assertEquals($v, [
-            "Claire BAZY MALAURIE",
-            "Guy CANIVET",
-            "Jean-Louis DEBRÉ",
-            "Michel CHARASSE",
-            "Nicole BELLOUBET",
-            "Nicole MAESTRACCI",
-        ]);
+        $this->assertEquals($v[0]['id'], 'Claire BAZY MALAURIE');
+        $this->assertEquals($v[1]['id'], 'Guy CANIVET');
+        $this->assertEquals($v[2]['id'], 'Jean-Louis DEBRÉ');
+        $this->assertEquals($v[3]['id'], 'Michel CHARASSE');
+        $this->assertEquals($v[4]['id'], 'Nicole BELLOUBET');
+        $this->assertEquals($v[5]['id'], 'Nicole MAESTRACCI');
     }
 
     public function testRefDocAuteurs()    

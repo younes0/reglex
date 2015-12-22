@@ -29,7 +29,7 @@ class Base
         $results = $regExp->findIn($string);
 
         foreach ($results[0] as $key => $value) {
-            $results['organique'][$key][0] = Str::contains($value[0], ['loi organique', 'LO.']);
+            $results['organique'][$key] = Str::contains($value, ['loi organique', 'LO.']);
         }
 
         return $this->reformat($results, ['numero', 'code']);
@@ -197,7 +197,7 @@ class Base
 
         for ($i=1; $i <= 2; $i++) { 
             foreach ($output['institution'.$i] as $key => $value) {
-                if ( !$value[0]) {
+                if ( !$value) {
                     unset($output['institution'.$i][$key]);
                 }
             }
