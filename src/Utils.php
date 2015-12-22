@@ -7,6 +7,37 @@ use Illuminate\Support\Str;
 
 class Utils
 {   
+    static public $methodsTranslation = [
+       'loi'                 => 'loi',
+       'decret'              => 'décrêt',
+       'decretLoi'           => 'décrêt-loi',
+       'ordonnance'          => 'ordonnance',
+       'avis'                => 'avis',
+       'arrete'              => 'arrêté',
+       'arretCa'             => 'arrêt de la cour d\'appel',
+       'jugementTribunal'    => 'jugement du tribunal',
+       'arretCourCassation'  => 'arrêt de la cour de cassation',
+       'arretCourJusticeUe'  => 'arrêt de la cour de justice européenne',
+       'circulaire'          => 'circulaire',
+       'directiveUe'         => 'directive européenne',
+       'decisionClassiqueCe' => 'décision classique du Conseil d\'État',
+       'decisionRenvoiCe'    => 'décision de renvoi du Conseil d\'État',
+       'constitution'        => 'constitution',
+       'convention'          => 'convention',
+       'decisionCadreUe'     => 'décision-cadre éuropéenne',
+       'decisionCc'          => 'décision de la cour constitutionnelle',
+       'deliberationCc'      => 'délibération de la cour constitutionnelle',
+       'reglementCeOuUe'     => 'réglement européen',
+       'reglementCc'         => 'réglement de la cour constitutionnelle',
+       'decisionOuArretCedh' => 'décision ou arrêt de la CEDH',
+       'dccVisa'             => 'visa situé dans la décision',
+       'dccConsiderant'      => 'considérant situé dans la décision',
+       'dccMembres'          => 'membres de la décision',
+       'refDocAuteurs'       => 'auteurs référencés',
+       'dccOuCommentaireDccPremierParagraphe' => 'NULL',
+       'membre' => 'membre',
+    ];
+
     static public $mois = [
         'janvier',
         'février',
