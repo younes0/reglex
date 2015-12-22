@@ -12,16 +12,12 @@ class Base
     public function loi($string)
     {
         $regExp = $this->defaultBuilder()
-            ->eitherFind($this->getBuilder() // ex: L. 
-                ->anyOf(['L. ', 'LO. '])
-            )
-            ->orFind($this->getBuilder() // ex: loi organique du n°
-                ->anyOf(['loi', 'loi organique'])
-                ->anythingBut('n°')
-                ->then('n°')
-            )
+            ->anyOf(['L.', 'LO.', 'loi n°', 'loi organique n°'])
             ->maybe(' ')
-            ->append($this->twoNumbers())
+            ->append($this->getBuilder()
+                ->eitherFind($this->twoNumbers())
+                ->orFind($this->oneNumber())
+            )
             ->asGroup('numero')
             ->optional($this->getBuilder()
                 ->then(' du ')
