@@ -15,41 +15,35 @@ Les expressions regulières sont générées grâce à [RegExpBuilder](https://g
 ```php
 // avis
 // ---------------------------
-$a = (new Base)->avis('
+$base = new Base('
     l\'avis de la Assemblée territoriale de la Polynésie française en date du 25 novembre 1993 
     l\'avis de la Commission nationale de l\'informatique et des libertés inséré au Journal officiel de la République française 
 ');
 
-echo($a['institution'][0]); // 'Assemblée territoriale de la Polynésie française'
-echo($a['date'][1]); // '25 novembre 1993'
+$r = $base->avis();
 
-echo($a['institution'][1]); // 'Commission nationale de l\'informatique et des libertés);
+echo($r[0]['institution']); // 'Assemblée territoriale de la Polynésie française'
+echo($r[1]['date']); // '25 novembre 1993'
+echo($r[1]['institution']); // 'Commission nationale de l\'informatique et des libertés);
 
 // directives européennes
 // ---------------------------
-$a = (new Base)->directiveUe('
+$base = new Base('
     la directive 2003/54/CE 
     la directive 23/54/CE 
 ');
 
-echo($a['numero'][0]); // '2003/54/CE'
-echo($a['numero'][1]); // '23/54/CE'
+$r = $base->directiveUe();
+
+echo($r[0]['numero']); // '2003/54/CE'
+echo($r[1]['id']); // '23/54/CE' , identifiant unique
 ```
 
 Plus d'exemples dans les Tests.
 
 ## Installation
 
-ajout repo composer.json:
-```json
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "git@github.com:younes0/regexpbuilderphp.git"
-    }
-],
-```
-puis `composer require younes0/reglex`
+`composer require younes0/reglex`
 
 ## TODO
 
