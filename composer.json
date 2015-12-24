@@ -5,17 +5,11 @@
         "php",
         "reglex"
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:younes0/regexpbuilderphp.git"
-        }
-    ],
     "license": "MIT",
     "require": {
         "php": ">=5.4.0",
         "illuminate/support": "^5.1",
-        "gherkins/regexpbuilderphp": "dev-patched"
+        "gherkins/regexpbuilderphp": "^0.7"
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",
