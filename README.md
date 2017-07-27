@@ -4,8 +4,6 @@ Extracteur de normes juridiques situées dans un texte pour le droit français
 
 ## Introduction
 
-Librairie PHP developpée dans le cadre de la thèse d'[Emma Grego](mailto:grego.emma@yahoo.fr)
-
 Les expressions regulières sont générées grâce à [RegExpBuilder](https://github.com/gherkins/regexpbuilderphp) qui permet de réutiliser plus facilement certaines règles et surtout, sont beaucoup plus lisibles pour les non-développeurs. Une [version Javascript](https://github.com/thebinarysearchtree/regexpbuilderjs) de la librairie existe aussi.
 
 **En cours de développement, BC fortement possibles**
